@@ -3,7 +3,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'My Site',
+  title: 'Dev Cloud',
   tagline: 'Dinosaurs are cool',
   favicon: 'img/favicon.ico',
 
@@ -53,15 +53,21 @@ const config: Config = {
     navbar: {
       title: 'Devcloud',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'DevCloud Logo',
         src: 'img/logo.svg',
       },
       items: [
         {
+          type: 'doc',
+          docId: 'framework',
+          label: '框架指南',
+          position: 'left',
+        },
+        {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: '框架',
+          label: '产品手册',
         },
         {
           href: 'https://github.com/facebook/docusaurus',
