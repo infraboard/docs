@@ -3,20 +3,20 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'DevCloud Documentation',
+  title: 'My Site',
   tagline: 'Dinosaurs are cool',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://devcloud.inforboard.com',
+  url: 'https://your-docusaurus-site.example.com',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'inforboard', // Usually your GitHub org/user name.
-  projectName: 'devcloud', // Usually your repo name.
+  organizationName: 'facebook', // Usually your GitHub org/user name.
+  projectName: 'docusaurus', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -25,11 +25,8 @@ const config: Config = {
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'zh',
-    locales: ['zh'],
-    localeConfigs: {
-      zh: {label: '简体中文'}
-  },
+    defaultLocale: 'en',
+    locales: ['en'],
   },
 
   presets: [
@@ -38,13 +35,6 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        },
-        blog: {
-          showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
@@ -61,25 +51,18 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'DevCloud',
+      title: 'Devcloud',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
       },
       items: [
         {
-          type: 'doc',
-          docId: 'framework',
-          label: '框架',
+          type: 'docSidebar',
+          sidebarId: 'tutorialSidebar',
           position: 'left',
+          label: '框架',
         },
-        {
-          type: 'localeDropdown',
-          position: 'right',
-          dropdownItemsBefore: [],
-          dropdownItemsAfter: [],
-          className: 'icon-link language navbar__item',
-      },
         {
           href: 'https://github.com/facebook/docusaurus',
           label: 'GitHub',
@@ -119,10 +102,6 @@ const config: Config = {
         {
           title: 'More',
           items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
             {
               label: 'GitHub',
               href: 'https://github.com/facebook/docusaurus',
