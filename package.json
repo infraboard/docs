@@ -9,7 +9,7 @@
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "deploy-gitee": "npm run build && gh-pages -d build -b master -r 'https://gitee.com/infraboard/docs.git'",
-    "deploy-github": "npm run build && gh-pages -d build -b gh-pages -r 'git@github.com:infraboard/docs.git'",
+    "deploy-github": "npm run build && gh-pages -d build -b master -r 'git@github.com:infraboard/infraboard.github.io.git'",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
