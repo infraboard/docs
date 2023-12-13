@@ -13,7 +13,33 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 const sidebars: SidebarsConfig = {
   framework: [
     'framework',
-    'framework/quickstart'
+    'framework/quickstart',
+    {
+      type: 'category',
+      label: '业务接口',
+      collapsed: false,
+      items: [
+        'framework/api/index',
+        'framework/api/http',
+        'framework/api/grpc',
+      ],
+    },
+    {
+      type: 'category',
+      label: '业务组件',
+      collapsed: false,
+      items: [
+        'framework/component/index',
+        'framework/component/mysql',
+        'framework/component/mongo',
+        'framework/component/redis',
+        'framework/component/log',
+        'framework/component/kafka',
+        'framework/component/cache',
+        'framework/component/lock',
+        'framework/component/trace',
+      ],
+    },
   ],
   tutorialSidebar: [
     'intro',

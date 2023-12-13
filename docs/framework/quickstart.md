@@ -6,7 +6,9 @@ sidebar_label: 快速开始
 下面将演示一个上图中 应用开发区的一个HelloWorld应用, 完整代码请参考: [样例代码](https://github.com/infraboard/mcube/tree/master/docs/example)
 
 
-## 定义Hello业务: helloworld包
+## 定义业务
+
+helloworld包
 ```go
 // 1. 业务定义
 type HelloService interface {
@@ -14,7 +16,9 @@ type HelloService interface {
 }
 ```
 
-## 实现Hello业务: helloworld/impl包
+## 实现业务
+
+helloworld/impl包
 ```go
 func init() {
 	ioc.Controller().Registry(&HelloServiceImpl{})
@@ -41,7 +45,9 @@ func (i *HelloServiceImpl) Hello() string {
 }
 ```
 
-## 定义Helloworl API接口: helloword/api包
+## 暴露接口
+
+定义Helloworl API接口: helloword/api包
 ```go
 func init() {
 	ioc.Api().Registry(&HelloServiceApiHandler{})
@@ -85,7 +91,9 @@ func (h *HelloServiceApiHandler) Hello(c *gin.Context) {
 }
 ```
 
-## 加载业务包 启动服务: main
+## 加载业务
+
+启动服务: main
 ```go
 import (
     ...
@@ -111,7 +119,9 @@ func main() {
 }
 ```
 
-## 启动程序, 配置文件请参考: [程序配置](https://github.com/infraboard/mcube/blob/master/docs/example/etc/application.toml)
+## 启动程序
+
+配置文件请参考: [程序配置](https://github.com/infraboard/mcube/blob/master/docs/example/etc/application.toml)
 ```sh
 $ go run main.go 
 2023-11-14T17:40:32+08:00 INFO   config/application/application.go:93 > loaded configs: [log.v1 app.v1 datasource.v1] component:APPLICATION
