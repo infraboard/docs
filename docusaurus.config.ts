@@ -1,6 +1,9 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import path from 'path';
+
+
 
 const config: Config = {
   title: 'Dev Cloud',
@@ -30,6 +33,8 @@ const config: Config = {
     locales: ['en'],
   },
 
+
+
   presets: [
     [
       'classic',
@@ -49,6 +54,7 @@ const config: Config = {
   ],
 
   themeConfig: {
+    cname: 'mdev.group',
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
