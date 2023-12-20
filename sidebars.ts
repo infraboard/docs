@@ -16,7 +16,7 @@ const sidebars: SidebarsConfig = {
     'framework/quickstart',
     {
       type: 'category',
-      label: '业务接口',
+      label: '应用接口',
       collapsed: false,
       items: [
         'framework/api/index',
@@ -26,18 +26,29 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '业务组件',
+      label: '应用配置',
+      collapsed: false,
+      items: [
+        'framework/config/index',
+        'framework/config/http',
+        'framework/config/grpc',
+        'framework/config/log',
+        'framework/config/metric',
+        'framework/config/trace',
+      ],
+    },
+    {
+      type: 'category',
+      label: '应用组件',
       collapsed: false,
       items: [
         'framework/component/index',
         'framework/component/mysql',
         'framework/component/mongo',
         'framework/component/redis',
-        'framework/component/log',
         'framework/component/kafka',
         'framework/component/cache',
         'framework/component/lock',
-        'framework/component/trace',
       ],
     },
   ],

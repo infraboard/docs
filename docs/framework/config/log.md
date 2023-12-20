@@ -1,0 +1,25 @@
+---
+title: Log
+sidebar_label: Log
+---
+
+https://github.com/infraboard/mcube/blob/master/ioc/config/logger/logger.go#L89-L99
+
+##  默认配置
+
+```toml
+[log]
+  caller_deep = 3
+  level = "debug"
+  trace_filed = "trace_id"
+  [log.console]
+    enable = true
+    no_color = false
+  [log.file]
+    enable = false
+    file_path = ""
+    max_size = 100
+    max_backups = 6
+    max_age = 0
+    compress = false
+```

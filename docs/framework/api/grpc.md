@@ -88,6 +88,14 @@ ioc.Controller().Registry(&HelloGrpc{})
 
 ##  启动服务
 
+```go
+// 启动应用
+err = application.App().Start(context.Background())
+if err != nil {
+    panic(err)
+}
+```
+
 可以看到grpc的对象 hello_module.v1 已经注册, 并且服务监听在127.0.0.1:18080
 ```go
 $ Golang/inforboard/mcube ‹master*› » go run examples/rpc_grpc/server/main.go 
@@ -126,3 +134,5 @@ func main() {
 $ Golang/inforboard/mcube ‹master*› » go run examples/rpc_grpc/client/main.go                                                                                            1 ↵
 msg:"hello, old yu"
 ```
+
+完整的例子请查看: [gin](https://github.com/infraboard/mcube/blob/master/examples/rpc_grpc)

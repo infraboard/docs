@@ -1,0 +1,42 @@
+---
+title: HTTP Server
+sidebar_label: HTTP Server
+---
+
+
+
+
+
+
+## 默认配置
+
+```toml
+[app.http]
+  enable = false
+  host = "127.0.0.1"
+  port = 8010
+  path_prefix = "api"
+  web_framework = ""
+  read_header_timeout = 30
+  read_timeout = 60
+  write_timeout = 60
+  idle_timeout = 300
+  max_header_size = "16kb"
+  enable_ssl = false
+  cert_file = ""
+  key_file = ""
+  enable_trace = false
+
+[app.http.health_check]
+  enabled = true
+
+[app.http.cors]
+  enabled = false
+  cors_allowed_headers = ["*"]
+  cors_allowed_domains = ["*"]
+  cors_allowed_methods = ["HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"]
+
+[app.http.api_doc]
+  enabled = true
+  doc_path = "/apidocs.json"
+```
