@@ -18,7 +18,7 @@ if err != nil {
 }
 ```
 
-这样启动的应用使用的是默认配置:
+这样启动的应用使用的是默认配置, 默认路径: etc/application.toml
 ```toml
 [app]
   name = "mcube_app"
@@ -26,7 +26,7 @@ if err != nil {
 [app.http]
   host = "127.0.0.1"
   port = 8010
-  path_prefix = "api"d
+  path_prefix = "api"
 
 [app.grpc]
   host = "127.0.0.1"
