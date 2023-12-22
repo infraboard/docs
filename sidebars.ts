@@ -51,6 +51,16 @@ const sidebars: SidebarsConfig = {
         'framework/component/lock',
       ],
     },
+    {
+      type: 'category',
+      label: '框架原理',
+      collapsed: false,
+      items: [
+        'framework/core/arch',
+        'framework/core/ioc',
+        'framework/core/di',
+      ],
+    },
   ],
   tutorialSidebar: [
     'intro',
