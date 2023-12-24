@@ -10,7 +10,7 @@ sidebar_label: HTTP Server
 
 ## 默认配置
 
-```toml
+```toml tab
 [app.http]
   enable = false
   host = "127.0.0.1"
@@ -39,4 +39,7 @@ sidebar_label: HTTP Server
 [app.http.api_doc]
   enabled = true
   doc_path = "/apidocs.json"
+```
+
+```env tab
 ```

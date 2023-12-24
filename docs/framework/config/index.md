@@ -19,7 +19,7 @@ if err != nil {
 ```
 
 这样启动的应用使用的是默认配置, 默认路径: etc/application.toml
-```toml
+```toml tab
 [app]
   name = "mcube_app"
 
