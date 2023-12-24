@@ -3,7 +3,7 @@ title: 快速开始
 sidebar_label: 快速开始
 ---
 
-下面将演示一个上图中 应用开发区的一个HelloWorld应用, 完整代码请参考: [样例代码](https://github.com/infraboard/mcube/tree/master/docs/example)
+下面将演示一个上图中 应用开发区的一个HelloWorld应用, 完整代码请参考: [样例代码](https://github.com/infraboard/mcube/tree/master/examples/project)
 
 
 ## 定义业务
@@ -112,7 +112,7 @@ func main() {
 	}
 
 	// 启动应用, 应用会自动加载 刚才实现的Gin Api Handler
-	err = application.App().Start(context.Background())
+	err = application.App().Start()
 	if err != nil {
 		panic(err)
 	}

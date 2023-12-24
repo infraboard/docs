@@ -1,8 +1,7 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import path from 'path';
-
+import tabBlocks from "docusaurus-remark-plugin-tab-blocks";
 
 
 const config: Config = {
@@ -45,6 +44,19 @@ const config: Config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            remarkPlugins: [
+              [
+                tabBlocks,
+                // optional plugin configuration
+                {
+                  labels: [
+                    ["json", "JSON"],
+                    ["jsx", "JSX"],
+                    ["tsx", "TSX"],
+                  ],
+                },
+              ],
+            ],
         },
         theme: {
           customCss: './src/css/custom.css',
