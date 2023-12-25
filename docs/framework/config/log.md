@@ -69,7 +69,7 @@ package main
 
 import (
 	"github.com/infraboard/mcube/v2/ioc"
-	"github.com/infraboard/mcube/v2/ioc/config/logger"
+	"github.com/infraboard/mcube/v2/ioc/config/log"
 )
 
 func main() {
@@ -91,7 +91,7 @@ package main
 
 import (
 	"github.com/infraboard/mcube/v2/ioc"
-	"github.com/infraboard/mcube/v2/ioc/config/logger"
+	"github.com/infraboard/mcube/v2/ioc/config/log"
 )
 
 func main() {
@@ -115,7 +115,7 @@ import (
 	"context"
 
 	"github.com/infraboard/mcube/v2/ioc"
-	"github.com/infraboard/mcube/v2/ioc/config/logger"
+	"github.com/infraboard/mcube/v2/ioc/config/log"
 )
 
 func main() {
