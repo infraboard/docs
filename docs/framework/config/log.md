@@ -56,7 +56,7 @@ LOG_FILE_MAX_AGE=0
 LOG_FILE_COMPRESS=false
 ```
 
-更详细的信息请查看[源码](https://github.com/infraboard/mcube/blob/master/ioc/config/logger/logger.go#L89-L99)
+更详细的信息请查看[源码](https://github.com/infraboard/mcube/blob/master/ioc/config/logger/log.go#L89-L99)
 
 
 ## 基本使用
@@ -75,8 +75,8 @@ import (
 func main() {
 	ioc.DevelopmentSetup()
 
-	gLogger := logger.L()
-	gLogger.Debug().Msg("this is global logger debug msg")
+	gLogger := log.L()
+	glog.Debug().Msg("this is global logger debug msg")
 }
 ```
 
@@ -97,8 +97,8 @@ import (
 func main() {
 	ioc.DevelopmentSetup()
 
-	subLogger := logger.Sub("app1")
-	subLogger.Debug().Msg("this is app1 sub logger debug msg")
+	subLogger := log.Sub("app1")
+	sublog.Debug().Msg("this is app1 sub logger debug msg")
 }
 ```
 
@@ -121,15 +121,15 @@ import (
 func main() {
 	ioc.DevelopmentSetup()
 
-	gLogger := logger.L()
-	gLogger.Debug().Msg("this is global logger debug msg")
+	gLogger := log.L()
+	glog.Debug().Msg("this is global logger debug msg")
 
-	subLogger := logger.Sub("app1")
-	subLogger.Debug().Msg("this is app1 sub logger debug msg")
+	subLogger := log.Sub("app1")
+	sublog.Debug().Msg("this is app1 sub logger debug msg")
 
 	ctx := context.Background()
-	traceLogger := logger.T("app1").Trace(ctx)
-	traceLogger.Debug().Msg("this is app1 trace logger debug msg")
+	traceLogger := log.T("app1").Trace(ctx)
+	tracelog.Debug().Msg("this is app1 trace logger debug msg")
 }
 ```
 

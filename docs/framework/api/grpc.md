@@ -90,9 +90,9 @@ ioc.Controller().Registry(&HelloGrpc{})
 
 ```go
 // 启动应用
-err = application.App().Start(context.Background())
+err := server.Run(context.Background())
 if err != nil {
-    panic(err)
+	panic(err)
 }
 ```
 

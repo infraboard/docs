@@ -7,15 +7,15 @@ sidebar_label: 基础配置
 ```go
 import (
     ...
-    "github.com/infraboard/mcube/v2/ioc/config/application"
+    "github.com/infraboard/mcube/v2/ioc/server"
     ...
 )
 
-// 启动应用
-err = application.App().Start(context.Background())
-if err != nil {
-    panic(err)
-}
+	// 启动应用
+	err := server.Run(context.Background())
+	if err != nil {
+		panic(err)
+	}
 ```
 
 这样启动的应用使用的是默认配置, 默认路径: etc/application.toml
@@ -23,12 +23,12 @@ if err != nil {
 [app]
   name = "mcube_app"
 
-[app.http]
+[http]
   host = "127.0.0.1"
   port = 8010
   path_prefix = "api"
 
-[app.grpc]
+[grpc]
   host = "127.0.0.1"
   port = 18010
 ```
