@@ -32,23 +32,12 @@ sidebar_label: HTTP Server
   # 开启Trace
   enable_trace = false
 
-# HTTP健康检查
-[http.health_check]
-  enabled = true
-
 # 跨域配置
 [http.cors]
   enabled = false
   cors_allowed_headers = ["*"]
   cors_allowed_domains = ["*"]
   cors_allowed_methods = ["HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"]
-
-# Swagger API文档路径配置
-[http.api_doc]
-  # 是否开启API Doc
-  enabled = true
-  # Swagger API Doc URL路径
-  doc_path = "/apidocs.json"
 ```
 
 ```env tab
@@ -71,7 +60,4 @@ HTTP_CORS_ENABLED=false
 HTTP_ALLOWED_HEADERS="*"
 HTTP_ALLOWED_DOMAINS="*"
 HTTP_ALLOWED_METHODS=""HEAD,OPTIONS,GET,POST,PUT,PATCH,DELETE"
-
-HTTP_API_DOC_HTTP_API_DOC_ENABLED="true"
-HTTP_API_DOC_HTTP_API_DOC_PATH="/apidocs.json"
 ```

@@ -32,9 +32,12 @@ const sidebars: SidebarsConfig = {
         'framework/config/index',
         'framework/config/http',
         'framework/config/grpc',
+        'framework/config/api_doc',
+        'framework/config/health_check',
         'framework/config/log',
         'framework/config/metric',
         'framework/config/trace',
+ 
       ],
     },
     {
