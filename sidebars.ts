@@ -29,9 +29,7 @@ const sidebars: SidebarsConfig = {
       label: '应用配置',
       collapsed: false,
       items: [
-        'framework/config/index',
-        'framework/config/http',
-        'framework/config/grpc',
+        'framework/config/server',
         'framework/config/api_doc',
         'framework/config/health_check',
         'framework/config/log',
