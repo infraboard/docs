@@ -84,13 +84,6 @@ APP_NAME="mcube_app"
   max_header_size = "16kb"
   # 开启Trace
   enable_trace = false
-
-# 跨域配置
-[http.cors]
-  enabled = false
-  cors_allowed_headers = ["*"]
-  cors_allowed_domains = ["*"]
-  cors_allowed_methods = ["HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"]
 ```
 
 ```env tab
@@ -108,11 +101,6 @@ HTTP_MAX_HEADER_SIZE="16kb"
 
 HTTP_ENABLE_TRACE=false
 HTTP_HEALTH_CHECK_ENABLED=true
-
-HTTP_CORS_ENABLED=false
-HTTP_ALLOWED_HEADERS="*"
-HTTP_ALLOWED_DOMAINS="*"
-HTTP_ALLOWED_METHODS=""HEAD,OPTIONS,GET,POST,PUT,PATCH,DELETE"
 ```
 
 ### GRPC Server

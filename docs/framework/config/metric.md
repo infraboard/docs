@@ -111,7 +111,7 @@ func (c *EventCollect) Collect(ch chan<- prometheus.Metric) {
 ```
 
 
-### 注册采集器
+### 注册Collector
 
 在控制器初始化的时候完成注册:
 ```go

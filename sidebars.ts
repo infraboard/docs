@@ -35,7 +35,7 @@ const sidebars: SidebarsConfig = {
         'framework/config/log',
         'framework/config/metric',
         'framework/config/trace',
- 
+        'framework/config/cors',
       ],
     },
     {
@@ -43,7 +43,6 @@ const sidebars: SidebarsConfig = {
       label: '应用组件',
       collapsed: false,
       items: [
-        'framework/component/index',
         'framework/component/mysql',
         'framework/component/mongo',
         'framework/component/redis',
