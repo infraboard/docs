@@ -6,6 +6,10 @@ sidebar_label: 快速开始
 下面将演示一个上图中 应用开发区的一个HelloWorld应用, 完整代码请参考: [样例代码](https://github.com/infraboard/mcube/tree/master/examples/project)
 
 
+## 逻辑架构
+
+![](/img/mcube/arch.png)
+
 ## 定义业务
 
 helloworld包
