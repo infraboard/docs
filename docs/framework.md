@@ -3,7 +3,7 @@ title: 框架概述
 sidebar_label: 框架概述
 ---
 
-mcube是一款用于构建渐进式微服务(单体-->微服务)的框架, 让应用开发者专注于业务开发, 同时提供丰富的配置即用的功能配置, 
+mcube是一款用于构建渐进式微服务(单体-->微服务)的框架, 让应用从单体无缝过渡到微服务, 同时提供丰富的配置即用的功能配置, 
 只需简单配置就可拥有:
 + Log: 支持文件滚动和Trace的日志打印
 + Metric: 支持应用自定义指标监控
@@ -238,5 +238,166 @@ $ mcube/examples/simple ‹master*› » go run main.go
 2024-01-04T21:48:48+08:00 INFO   config/http/http.go:211 > HTTP服务启动成功, 监听地址: 127.0.0.1:8020 component:HTTP
 ```
 
-完整[样例代码](https://github.com/infraboard/mcube/blob/master/examples/simple/main.go)
+### 完整代码
 
+完整[样例代码](https://github.com/infraboard/mcube/blob/master/examples/simple/main.go)
+```go
+package main
+
+import (
+	"context"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/infraboard/mcube/v2/ioc"
+	"github.com/infraboard/mcube/v2/ioc/config/datasource"
+	"github.com/infraboard/mcube/v2/ioc/server"
+	"gorm.io/gorm"
+)
+
+func main() {
+	// 注册HTTP接口类
+	ioc.Api().Registry(&ApiHandler{})
+
+	// 开启配置文件读取配置
+	server.DefaultConfig.ConfigFile.Enabled = true
+	server.DefaultConfig.ConfigFile.Path = "etc/application.toml"
+
+	// 启动应用
+	err := server.Run(context.Background())
+	if err != nil {
+		panic(err)
+	}
+}
+
+type ApiHandler struct {
+	// 继承自Ioc对象
+	ioc.ObjectImpl
+
+	// mysql db依赖
+	db *gorm.DB
+}
+
+// 覆写对象的名称, 该名称名称会体现在API的路径前缀里面
+// 比如: /simple/api/v1/module_a/db_stats
+// 其中/simple/api/v1/module_a 就是对象API前缀, 命名规则如下:
+// <service_name>/<path_prefix>/<object_version>/<object_name>
+func (h *ApiHandler) Name() string {
+	return "module_a"
+}
+
+// 初始化db属性, 从ioc的配置区域获取共用工具 gorm db对象
+func (h *ApiHandler) Init() error {
+	h.db = datasource.DB()
+	return nil
+}
+
+// API路由
+func (h *ApiHandler) Registry(r gin.IRouter) {
+	r.GET("/db_stats", func(ctx *gin.Context) {
+		db, _ := h.db.DB()
+		ctx.JSON(http.StatusOK, gin.H{
+			"data": db.Stats(),
+		})
+	})
+}
+```
+
+
+## 工程化
+
+有同学看到这里可能会十分不解, 上面这样简单的功能, 我几行代码就能搞定, 为啥要搞那么复杂:
+```go
+func main() {
+  r := gin.Default()  
+  dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
+  db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+  if err != nil {
+  	panic(err)
+  }
+  r.GET("/simple/api/v1/module_a/db_stats", func(ctx *gin.Context) {
+  	db, _ := db.DB()
+  	ctx.JSON(http.StatusOK, gin.H{
+  		"data": db.Stats(),
+  	})
+  })
+}
+```
+
+针对简单的功能, 上面这样写固然没问题, 甚至更易读, 但是随着业务发展, 功能越来越多, 业务越来越复杂, 如果这样写, 到了后期基本无法维护。
+
+想要业务从简单到复杂, 代码维护的复杂度不增加, 我们就需要对工程进行统一的设计, 提供统一的标准, 我们通过下面3个纬度体验mcube 工程化带来的好处:
++ 标准化工程配置
++ 即插即用的组件
++ 灵活的模块组合
+
+### 标准化工程配置
+
+统一了项目的配置加载方式:
++ 环境变量
++ 配置文件
+    + TOML
+	+ YAML
+	+ JSON
+
+下面是项目配置文件(etc/application.toml)内容: 
+```toml
+[app]
+name = "simple"
+key  = "this is your app key"
+
+[http]
+host = "127.0.0.1"
+port = 8020
+
+[datasource]
+host = "127.0.0.1"
+port = 3306
+username = "root"
+password = "123456"
+database = "test"
+
+[log]
+level = "debug"
+
+[log.file]
+enable = true
+file_path = "logs/app.log"
+```
+
+更多配置见左侧应用配置板块
+
+### 即插即用的组件
+
+通过简单的配置就能为项目添加:
++ 检查检查(Health Chcek)
++ 应用指标监控(Metric)
+
+```go
+import (
+  // 开启Health健康检查
+  _ "github.com/infraboard/mcube/v2/ioc/apps/health/gin"
+  // 开启Metric
+  _ "github.com/infraboard/mcube/v2/ioc/apps/metric/gin"
+)
+```
+
+启动过后, 在日志里就能看到这2个功能开启了:
+```sh
+2024-01-05T11:30:00+08:00 INFO   health/gin/check.go:52 > Get the Health using http://127.0.0.1:8020/healthz component:HEALTH_CHECK
+2024-01-05T11:30:00+08:00 INFO   metric/gin/metric.go:51 > Get the Metric using http://127.0.0.1:8020/metrics component:METRIC
+```
+
+当然你也可以通过配置来修改功能的URL路径:
+```toml
+[health]
+  path = "/healthz"
+
+[metric]
+  enable = true
+  provider = "prometheus"
+  endpoint = "/metrics"
+```
+
+
+### 灵活的模块组合

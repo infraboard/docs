@@ -6,11 +6,72 @@ sidebar_label: 快速开始
 下面将演示一个上图中 应用开发区的一个HelloWorld应用, 完整代码请参考: [样例代码](https://github.com/infraboard/mcube/tree/master/examples/project)
 
 
-## 逻辑架构
+## 项目结构
+
+```sh
+# 查看文件列表
+$ mcube/examples/project ‹master*› » ls 
+apps    etc     main.go
+# 查看目录结构
+$ mcube/examples/project ‹master*› » tree .
+.
+|____etc
+| |____application.toml
+|____apps
+| |____helloworld
+| | |____impl
+| | | |____collector.go
+| | | |____impl.go
+| | |____interface.go
+| | |____api
+| | | |____http.go
+|____main.go
+```
+
+### 工程维度
+
++ etc: 配置文件目录, 默认为etc/application.toml
++ apps: 业务模块目录, 所有业务模块都存放在该目录下, 现在只有一个helloworld模块
++ main.go: 程序入口
+
+### 业务维度
+
+不同于传统的功能分层架构(mvc), 框架推荐采用业务分区布局, 这是为了方便后面进行微服务拆分, 具体见[渐进式微服务](./core/arch.md)
+
+业务模块开发遵循如下规则:
++ 定义业务(Interface): 梳理需求, 抽象业务逻辑, 定义出业务的数据结构与接口约束
++ 业务实现(Controller): 根据业务定义, 选择具体的技术(比如MySQL/MongoDB/ES)，做具体的业务实现
++ 业务接口(API): 如果需要对外提供 API, 则按需将需要的对外暴露API接口
+
+表现在目录结构上:
++ 定义业务: 业务模块顶层目录, 具体表现为: helloworld/interface.go(接口定义)
++ 业务实现: 业务模块内impl目录, 具体表现为: helloworld/impl/impl.go(业务实现对象)
++ 业务接口: 业务模块内api目录, 具体表现为: helloworld/api/http.go(HTTP Restful接口实现对象)
+```sh
+# helloworld业务模块 文件列表
+$ project/apps/helloworld ‹master*› » ls
+api          impl         interface.go
+# helloworld业务模块 目录结构
+$ project/apps/helloworld ‹master*› » tree .
+.
+|____impl            
+| |____collector.go
+| |____impl.go
+|____interface.go    
+|____api            
+| |____http.go
+```
+
+### 整体设计
+
+开发业务时，我们只需关注apps目录, 而其他很多功能由框架复杂提供, 因此框架工具 + 业务模块共同构成了整个项目:
 
 ![](/img/mcube/arch.png)
 
-## 定义业务
+
+## 项目开发
+
+### 定义业务
 
 helloworld包
 ```go
@@ -20,7 +81,7 @@ type HelloService interface {
 }
 ```
 
-## 实现业务
+### 实现业务
 
 helloworld/impl包
 ```go
@@ -49,7 +110,7 @@ func (i *HelloServiceImpl) Hello() string {
 }
 ```
 
-## 暴露接口
+### 暴露接口
 
 定义Helloworl API接口: helloword/api包
 ```go
@@ -95,7 +156,7 @@ func (h *HelloServiceApiHandler) Hello(c *gin.Context) {
 }
 ```
 
-## 加载业务
+### 加载业务
 
 启动服务: main
 ```go
@@ -122,7 +183,7 @@ func main() {
 }
 ```
 
-## 启动程序
+### 启动程序
 
 配置文件请参考: [程序配置](https://github.com/infraboard/mcube/blob/master/docs/example/etc/application.toml)
 ```sh
