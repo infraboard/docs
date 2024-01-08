@@ -5,8 +5,8 @@ import tabBlocks from "docusaurus-remark-plugin-tab-blocks";
 
 
 const config: Config = {
-  title: 'Dev Cloud',
-  tagline: 'Dinosaurs are cool',
+  title: 'mcube',
+  tagline: '一个使用Go语言开发渐进式微服务的框架',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -70,7 +70,7 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'Devcloud',
+      title: 'mcube',
       logo: {
         alt: 'DevCloud Logo',
         src: 'img/logo.svg',
@@ -86,7 +86,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: '产品手册',
+          label: '应用模块',
         },
         {
           href: 'https://github.com/infraboard/mcube',
