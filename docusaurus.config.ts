@@ -5,7 +5,7 @@ import tabBlocks from "docusaurus-remark-plugin-tab-blocks";
 
 
 const config: Config = {
-  title: '双流区极乐云信息技术服务工作室',
+  title: 'mcube',
   tagline: '一个使用Go语言开发渐进式微服务的框架',
   favicon: 'img/favicon.ico',
 
