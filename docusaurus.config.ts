@@ -5,7 +5,7 @@ import tabBlocks from "docusaurus-remark-plugin-tab-blocks";
 
 
 const config: Config = {
-  title: 'mcube',
+  title: '双流区极乐云信息技术服务工作室',
   tagline: '一个使用Go语言开发渐进式微服务的框架',
   favicon: 'img/favicon.ico',
 
@@ -134,7 +134,8 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} 双流区极乐云信息技术服务工作室 ｜ 
+      <a href="http://www.beian.miit.gov.cn" target="_blank">备案号：京ICP备12345678号</a>`,
     },
     prism: {
       theme: prismThemes.github,
