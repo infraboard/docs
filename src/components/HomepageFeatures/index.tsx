@@ -10,32 +10,29 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
+    title: '开箱即用',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        通过简单的配置，你的应用就可以拥有, 健康检查, API文档, 应用自定义监控, 分布式链路追踪等功能。
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: '组件丰富',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        应用开发中常见的功能组件, 比如MySQL,Kafka,Redis,分布式缓存, 分布式锁, 都可以配置后直接使用。
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: '架构优良',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        既可开发单体架构应用，也可开发微服务架构应用, 并且使用该框架开发的单体服务可以无缝迁移成微服务。再也不用担心服务拆分的问题了。
       </>
     ),
   },
