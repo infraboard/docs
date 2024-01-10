@@ -135,7 +135,7 @@ const config: Config = {
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} 双流区极乐云信息技术服务工作室 ｜ 
-      <a href="http://www.beian.miit.gov.cn" target="_blank">备案号：京ICP备12345678号</a>`,
+      <a href="https://beian.miit.gov.cn/" target="_blank">备案号：蜀ICP备2024044884号-1</a>`,
     },
     prism: {
       theme: prismThemes.github,
