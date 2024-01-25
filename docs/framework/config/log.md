@@ -3,7 +3,7 @@ title: Log
 sidebar_label: Log
 ---
 
-常见的功能比较完善的日子库有:
+常见的功能比较完善的日志库有:
 + logrus
 + zerolog
 + zap

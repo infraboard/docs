@@ -399,5 +399,4 @@ import (
   endpoint = "/metrics"
 ```
 
-
-### 灵活的模块组合
+### 功能强大的模块

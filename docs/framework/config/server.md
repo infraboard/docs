@@ -7,6 +7,8 @@ sidebar_label: Server
 
 ## 启动服务
 
+### 直接启动
+
 ```go
 import (
     ...
@@ -21,16 +23,6 @@ import (
 	}
 ```
 
-
-## 服务配置
-
-服务支持的配置方式:
-+ 环境变量 
-+ 配置文件
-  + TOML
-  + YAML
-  + JSON
-
 默认使用环境变量配置, 配置文件默认是关闭的, 也可以通过如下方式开启:
 ```go
 func main() {
@@ -43,7 +35,83 @@ func main() {
 }
 ```
 
-## 默认配置
+支持的配置方式:
++ 环境变量: 具体的参数见后面 服务配置 
++ 配置文件: 支持的格式有: TOML/YAML/JSON, 推荐使用TOML
+
+这种写法比较适合于单入口程序, 比如 只需要启动Server, 但是如果你在启动Server之前需要做初始化喃？常见的场景就是 用户中心初始化管理员账号密码。
+
+这就需要你的程序提供多个入口？ CLI启动就是用于这种场景的。
+
+### CLI启动
+
+cli集成的社区比较流行的CLI框架: [cobra](https://github.com/spf13/cobra)
+
+框架默认实现了Root Cmd, 我们只需要把我们需要的cmd注册给Root Cmd即可实现多入口
+```go
+import (
+  ...
+  "github.com/infraboard/mcube/v2/ioc/server/cmd"
+  ...
+)
+
+func main() {
+	// 注册HTTP接口类
+	ioc.Api().Registry(&ApiHandler{})
+
+	cmd.Root.AddCommand(
+		&cobra.Command{
+			Use:   "start",
+			Short: "example API服务",
+			Run: func(cmd *cobra.Command, args []string) {
+				cobra.CheckErr(server.Run(context.Background()))
+			},
+		},
+		&cobra.Command{
+			Use:   "init",
+			Short: "初始化Admin用户名密码",
+			Run: func(cmd *cobra.Command, args []string) {
+				cobra.CheckErr(server.Run(context.Background()))
+			},
+		},
+	)
+
+	// 启动
+	cmd.Execute()
+}
+```
+
+运行后我们就可以看到有2个命令可用了:
++ start 命令
++ init 命令
+```sh
+$ go run main.go 
+Usage:
+  exapmle [flags]
+  exapmle [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  init        初始化Admin用户名密码
+  start       example API服务
+
+Flags:
+  -f, --config-file string   the service config from file (default "etc/application.toml")
+  -t, --config-type string   the service config type [file/env] (default "file")
+  -h, --help                 help for exapmle
+  -v, --version              the mcenter version
+
+Use "exapmle [command] --help" for more information about a command.
+
+$ go run main.go start
+2024-01-25T12:22:36+08:00 INFO   ioc/server/server.go:74 > loaded configs: [app.v1 trace.v1 log.v1 datasource.v1 grpc.v1 http.v1] component:SERVER
+2024-01-25T12:22:36+08:00 INFO   ioc/server/server.go:75 > loaded controllers: [tokens.v1 users.v1] component:SERVER
+2024-01-25T12:22:36+08:00 INFO   ioc/server/server.go:76 > loaded apis: [tokens.v1 users.v1 module_a.v1] component:SERVER
+...
+```
+
+## 服务配置
 
 ### 应用通用配置
 
