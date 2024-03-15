@@ -400,3 +400,44 @@ import (
 ```
 
 ### 功能强大的模块
+
+在服务开发的过程中，我们将一些通用功能打包成一个模块, 在项目中引入, 这样可以减少重复代码, 提高开发效率。
+
+下面是一个IAM(身份与权限管理)模块: 
++ 管理管理接口
++ 令牌管理接口
++ 权限中间件
++ 初始化的CLI
+
+![iam](/img/mcube/iam.png)
+
+
+在程序启动时引入模块:
+```go
+import (
+	// 引入IAM模块组件
+	_ "github.com/infraboard/modules/iam"
+	// 引入IAM模块CLI工具
+	_ "github.com/infraboard/modules/iam/cmd"
+)
+```
+
+然后初始化:
+```sh
+# 初始化管理员用户
+$ modules/iam/example ‹main*› » go run main.go init                                                                               1 ↵
+? 请输入管理员用户名称: admin
+? 请输入管理员密码: ******
+? 再次输入管理员密码: ******
+```
+
+在业务接口开发中，使用中间件 就引入的身份认证和RBAC鉴权
+```go
+// API路由
+func (h *ApiHandler) Registry(r gin.IRouter) {
+	r.Use(middleware.Auth())
+	r.GET("/db_stats", middleware.Perm(user.ROLE_ADMIN), h.DBStats)
+}
+```
+
+模块的具体使用文档可以参考: [IAM模块](https://github.com/infraboard/modules/tree/main/iam)

@@ -9,20 +9,24 @@ sidebar_label: HTTP接口
 
 ## Gin框架
 
-### GinApiObject接口
+框架通过"github.com/infraboard/mcube/v2/ioc/config/gin"包提供了Gin的Router对象
++ RootRouter(): 返回一个*gin.Engine
++ ObjectRouter(obj ioc.Object): 返回一个子Router: gin.IRouter
 
-要编写一个Gin HTTP API模块, 你需要实现接口: GinApiObject
-```go
-type GinApiObject interface {
-	Object
-	Registry(gin.IRouter)
-}
-```
+基于此，我们可以在对象初始化的时候完成:
++ 业务路由的注册: router.Handle()
++ 业务中间件的加载: router.Use()
 
 ### 实现接口
 
 下面是一个hello world 样例 HelloServiceApiHandler 实现了GinApiObject接口:
 ```go
+
+import (
+	// 引入Gin Root Router: *gin.Engine
+	ioc_gin "github.com/infraboard/mcube/v2/ioc/config/gin"
+)
+
 type HelloServiceApiHandler struct {
 	// 继承自Ioc对象
 	ioc.ObjectImpl
@@ -38,18 +42,22 @@ func (h *HelloServiceApiHandler) Version() string {
 	return "v1"
 }
 
-// API路由
-func (h *HelloServiceApiHandler) Registry(r gin.IRouter) {
+// API路由注册
+func (h *HelloServiceApiHandler) Init() error {
+	// 该对象的系统前缀: /service_name/path_prefix/object_version/object_name
+	// service_name 默认为""
+	// /api/v1/hello_module/
+	r := ioc_gin.ObjectRouter(h)
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"data": "hello mcube",
 		})
 	})
+	return nil
 }
 ```
 
 ### 注册接口对象
-
 
 ```go
 // 注册HTTP接口类
@@ -68,38 +76,40 @@ if err != nil {
 
 启动后
 ```sh
-$ inforboard/mcube/examples ‹master*› » go run api.go                                                                                                                    1 ↵
-2023-12-14T19:11:40+08:00 INFO   config/application/application.go:103 > loaded configs: [trace.v1 log.v1 app.v1] component:APPLICATION
-2023-12-14T19:11:40+08:00 INFO   config/application/application.go:104 > loaded controllers: [] component:APPLICATION
-2023-12-14T19:11:40+08:00 INFO   config/application/application.go:105 > loaded apis: [hello_module.v1] component:APPLICATION
+$ inforboard/mcube/examples ‹master› » go run http_gin/main.go
 [GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
 
 [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
  - using env:   export GIN_MODE=release
  - using code:  gin.SetMode(gin.ReleaseMode)
 
-[GIN-debug] GET    /mcube_service/api/v1/hello_module/ --> main.(*HelloServiceApiHandler).Registry.func1 (3 handlers)
-2023-12-14T19:11:40+08:00 INFO   config/application/http.go:205 > HTTP服务启动成功, 监听地址: 127.0.0.1:8080 component:HTTP
+2024-03-15T11:44:17+08:00 INFO   cors/gin/cors.go:53 > cors enabled component:CORS
+[GIN-debug] GET    /api/v1/hello_module/     --> main.(*HelloServiceApiHandler).Hello-fm (4 handlers)
+2024-03-15T11:44:17+08:00 INFO   ioc/server/server.go:74 > loaded configs: [app.v1 trace.v1 log.v1 gin_webframework.v1 gin_cors.v1 http.v1 grpc.v1] component:SERVER
+2024-03-15T11:44:17+08:00 INFO   ioc/server/server.go:75 > loaded controllers: [] component:SERVER
+2024-03-15T11:44:17+08:00 INFO   ioc/server/server.go:76 > loaded apis: [health.v1 metric.v1 hello_module.v1 apidoc.v1] component:SERVER
+2024-03-15T11:44:17+08:00 INFO   config/http/http.go:141 > HTTP服务启动成功, 监听地址: 127.0.0.1:8080 component:HTTP
 ```
 
 完整的例子请查看: [gin](https://github.com/infraboard/mcube/blob/master/examples/http_gin/main.go)
 
 ## GoRestful框架
 
+框架通过"github.com/infraboard/mcube/v2/ioc/config/gorestful"包提供了Gin的Router对象
++ RootRouter(): 返回一个*restful.Container
++ ObjectRouter(obj ioc.Object): 返回一个WebService: *restful.WebService
 
-### GoRestfulApiObject接口
-
-要编写一个Go Restful HTTP API模块, 你需要实现接口: GoRestfulApiObject
-```go
-type GoRestfulApiObject interface {
-	Object
-	Registry(*restful.WebService)
-}
-```
+基于此，我们可以在对象初始化的时候完成:
++ 业务路由的注册: router.Route().To()
++ 业务中间件的加载: router.Filter()
 
 ### 实现接口
 
 ```go
+import (
+	"github.com/infraboard/mcube/v2/ioc/config/gorestful"
+)
+
 type HelloServiceApiHandler struct {
 	// 继承自Ioc对象
 	ioc.ObjectImpl
@@ -116,7 +126,8 @@ func (h *HelloServiceApiHandler) Version() string {
 }
 
 // API路由
-func (h *HelloServiceApiHandler) Registry(ws *restful.WebService) {
+func (h *HelloServiceApiHandler) Init() error {
+	ws := gorestful.ObjectRouter(h)
 	ws.Route(ws.GET("/").To(func(r *restful.Request, w *restful.Response) {
 		w.WriteAsJson(map[string]string{
 			"data": "hello mcube",
@@ -143,14 +154,20 @@ if err != nil {
 ```
 
 通过 API Doc的链接 可以查看当前注册的接口:
-```go
+```sh
 $ inforboard/mcube/examples ‹master› » go run http_go_restful/main.go 
-2023-12-18T11:34:52+08:00 INFO   config/application/application.go:106 > loaded configs: [log.v1 app.v1] component:APPLICATION
-2023-12-18T11:34:52+08:00 INFO   config/application/application.go:107 > loaded controllers: [] component:APPLICATION
-2023-12-18T11:34:52+08:00 INFO   config/application/application.go:108 > loaded apis: [hello_module.v1] component:APPLICATION
-2023-12-18T11:34:52+08:00 INFO   config/application/http_gorestful.go:79 > Get the API Doc using http://127.0.0.1:8080/apidocs.json component:GO-RESTFUL
-2023-12-18T11:34:52+08:00 INFO   config/application/http_gorestful.go:86 > 健康检查地址: http://127.0.0.1:8080/healthz component:GO-RESTFUL
-2023-12-18T11:34:52+08:00 INFO   config/application/http.go:236 > HTTP服务启动成功, 监听地址: 127.0.0.1:8080 component:HTTP
+2024-03-15T11:59:51+08:00 INFO   cors/gorestful/cors.go:52 > cors enabled component:CORS
+2024-03-15T11:59:51+08:00 INFO   metric/restful/metric.go:58 > Get the Metric using http://127.0.0.1:8080/metrics component:METRIC
+2024-03-15T11:59:51+08:00 INFO   health/restful/check.go:62 > Get the Health using http://127.0.0.1:8080/healthz component:HEALTH_CHECK
+2024-03-15T11:59:51+08:00 INFO   apidoc/restful/swagger.go:55 > Get the API Doc using http://127.0.0.1:8080/api/v1/apidoc component:API_DOC
+2024-03-15T11:59:51+08:00 INFO   ioc/server/server.go:74 > loaded configs: [app.v1 trace.v1 log.v1 go_restful_webframework.v1 go_restful_cors.v1 http.v1 grpc.v1] component:SERVER
+2024-03-15T11:59:51+08:00 INFO   ioc/server/server.go:75 > loaded controllers: [] component:SERVER
+2024-03-15T11:59:51+08:00 INFO   ioc/server/server.go:76 > loaded apis: [metric.v1 health.v1 hello_module.v1 apidoc.v1] component:SERVER
+2024-03-15T11:59:51+08:00 INFO   config/http/http.go:141 > HTTP服务启动成功, 监听地址: 127.0.0.1:8080 component:HTTP
 ```
 
 完整的例子请查看: [gin](https://github.com/infraboard/mcube/blob/master/examples/http_go_restful/main.go)
+
+
+
+
