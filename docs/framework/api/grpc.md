@@ -30,22 +30,20 @@ message GreetResponse {
 }
 ```
 
-
-## GRPCControllerObject接口
-
-实现了GRPCControllerObject接口的对象，会被自动注册给 grpc服务器
-
-```go
-type GRPCControllerObject interface {
-	Object
-	Registry(*grpc.Server)
-}
-```
-
 ## 实现GRPC服务端
 
+包`github.com/infraboard/mcube/v2/ioc/config/grpc`提供了全局GRPC Server对象
++ grpc.Get().Server(): 获取Server对象
+
+实现完GRPC Server对象后，只需要将对象注册给Server及可通过grpc server对我暴露GRPC服务了
+
 定义HelloGrpc对象: 
+
 ```go
+package (
+	"github.com/infraboard/mcube/v2/ioc/config/grpc"
+)
+
 type HelloGrpc struct {
 	// 继承自Ioc对象
 	ioc.ObjectImpl
@@ -56,14 +54,11 @@ type HelloGrpc struct {
 func (h *HelloGrpc) Name() string {
 	return "hello_module"
 }
-```
 
-实现GRPCControllerObject接口
-```go
-func (h *HelloGrpc) Registry(server *grpc.Server) {
-	pb.RegisterHelloServer(server, h)
+func (h *HelloGrpc) Init() error {
+	pb.RegisterHelloServer(grpc.Get().Server(), h)
+	return nil
 }
-
 ```
 
 实现GRPC服务
@@ -84,7 +79,6 @@ GRPC是属于服务端控制器, 需要注册到控制器空间
 // 注册HTTP接口类
 ioc.Controller().Registry(&HelloGrpc{})
 ```
-
 
 ##  启动服务
 
