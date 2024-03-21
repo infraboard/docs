@@ -19,7 +19,6 @@ TRACE_PROVIDER="otlp"
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="http://localhost:4137"
 ```
 
-
 ## 基本使用
 
 
