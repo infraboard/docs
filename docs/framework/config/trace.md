@@ -9,14 +9,14 @@ sidebar_label: Trace
 ```toml tab
 [trace]
   enable = false
-  provider = "jaeger"
-  endpoint = "http://localhost:14268/api/traces"
+  provider = "otlp"
+  endpoint = "http://localhost:4137"
 ```
 
 ```env tab
 TRACE_ENABLE=false
-TRACE_PROVIDER="jaeger"
-TRACE_PROVIDER_ENDPOINT="http://localhost:14268/api/traces"
+TRACE_PROVIDER="otlp"
+OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="http://localhost:4137"
 ```
 
 
