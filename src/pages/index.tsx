@@ -33,7 +33,7 @@ export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`双流区极乐云信息技术服务工作室`}
+      title={`mcube`}
       description="Description will go into a meta tag in <head />">
       <HomepageHeader />
       <main>
