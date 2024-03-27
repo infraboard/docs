@@ -10,13 +10,15 @@ sidebar_label: Trace
 [trace]
   enable = false
   provider = "otlp"
-  endpoint = "http://localhost:4137"
+  endpoint = "127.0.0.1:4318"
+  insecure = true
 ```
 
 ```env tab
 TRACE_ENABLE=false
 TRACE_PROVIDER="otlp"
-OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="http://localhost:4137"
+OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="127.0.0.1:4318"
+TRACE_INSECURE = true
 ```
 
 ## 基本使用
