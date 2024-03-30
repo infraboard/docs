@@ -70,23 +70,6 @@ Api对象支持2种框架:
 + GoRestful(v3)
 
 
-选择不同的HTTP框架 需要实现不同的接口, 这样mcube才能自动完成该对象的接口注册(注册路由到HTTP服务器)
-```go
-// 要使用Gin框架开发, 对象需要实现GinApiObject接口
-type GinApiObject interface {
-	Object
-	// 注册路由到Root Router
-	Registry(gin.IRouter)
-}
-
-// 要使用GoRestful框架开发, 对象需要实现GoRestfulApiObject接口
-type GoRestfulApiObject interface {
-	Object
-	// 注册路由到Root Router
-	Registry(*restful.WebService)
-}
-```
-
 ### Object接口
 
 无论使用那个框架，都需要实现Object接口, 只有实现了该接口，该对象才能被ioc空间管理:
@@ -123,9 +106,9 @@ type ApiHandler struct {
 }
 ```
 
-### 实现Api接口
+### 实现Object接口, 注册对象
 
-我们这里选择Gin框架, 因此实现GinApiObject接口, 通过继承已经实现了Object接口, 接下来实现Gin的Registry方法
+通过继承已经实现了Object接口
 ```go
 type ApiHandler struct {
 	// 继承自Ioc对象
@@ -133,17 +116,6 @@ type ApiHandler struct {
 
 	// db属性, gorm DB对象
 	db *gorm.DB
-}
-
-// API路由
-func (h *ApiHandler) Registry(r gin.IRouter) {
-	// 直接在router上添加一个db_stats接口
-	r.GET("/db_stats", func(ctx *gin.Context) {
-		db, _ := h.db.DB()
-		ctx.JSON(http.StatusOK, gin.H{
-			"data": db.Stats(),
-		})
-	})
 }
 ```
 
@@ -190,7 +162,19 @@ type ApiHandler struct {
 // 初始化db属性, 从ioc的配置区域获取共用工具 gorm db对象
 func (h *ApiHandler) Init() error {
 	h.db = datasource.DB()
+
+	// 进行业务暴露, router 通过ioc
+	router := ioc_gin.RootRouter()
+	router.GET("/db_stats", h.GetDbStats)
 	return nil
+}
+
+// 业务功能
+func (h *ApiHandler) GetDbStats(ctx *gin.Context) {
+	db, _ := h.db.DB()
+	ctx.JSON(http.StatusOK, gin.H{
+		"data": db.Stats(),
+	})
 }
 ```
 
@@ -251,8 +235,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/infraboard/mcube/v2/ioc"
 	"github.com/infraboard/mcube/v2/ioc/config/datasource"
+	ioc_gin "github.com/infraboard/mcube/v2/ioc/config/gin"
 	"github.com/infraboard/mcube/v2/ioc/server"
 	"gorm.io/gorm"
+
+	// 开启Health健康检查
+	_ "github.com/infraboard/mcube/v2/ioc/apps/health/gin"
+	// 开启Metric
+	_ "github.com/infraboard/mcube/v2/ioc/apps/metric/gin"
 )
 
 func main() {
@@ -289,16 +279,18 @@ func (h *ApiHandler) Name() string {
 // 初始化db属性, 从ioc的配置区域获取共用工具 gorm db对象
 func (h *ApiHandler) Init() error {
 	h.db = datasource.DB()
+
+	// 进行业务暴露, router 通过ioc
+	router := ioc_gin.RootRouter()
+	router.GET("/db_stats", h.GetDbStats)
 	return nil
 }
 
-// API路由
-func (h *ApiHandler) Registry(r gin.IRouter) {
-	r.GET("/db_stats", func(ctx *gin.Context) {
-		db, _ := h.db.DB()
-		ctx.JSON(http.StatusOK, gin.H{
-			"data": db.Stats(),
-		})
+// 业务功能
+func (h *ApiHandler) GetDbStats(ctx *gin.Context) {
+	db, _ := h.db.DB()
+	ctx.JSON(http.StatusOK, gin.H{
+		"data": db.Stats(),
 	})
 }
 ```
