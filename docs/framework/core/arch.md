@@ -1,6 +1,6 @@
 ---
-title: 渐进式微服务
-sidebar_label: 渐进式微服务
+title: 渐进式微服务 
+sidebar_label: 架构理念
 ---
 
 ## 项目架构组织方式

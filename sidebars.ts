@@ -12,6 +12,7 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
  */
 const sidebars: SidebarsConfig = {
   framework: [
+    'framework/core/arch',
     'framework',
     'framework/quickstart',
     {
@@ -56,7 +57,6 @@ const sidebars: SidebarsConfig = {
       label: '框架原理',
       collapsed: false,
       items: [
-        'framework/core/arch',
         'framework/core/ioc',
         'framework/core/di',
       ],
