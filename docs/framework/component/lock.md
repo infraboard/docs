@@ -5,18 +5,20 @@ sidebar_label: 分布式锁
 
 
 支持
-+ redis: redis缓存
++ go_cache: 基于内存的本地缓存, 单体服务时使用
++ redis: redis分布式锁, 分布式时使用 
 
 ## 配置组件
 
 ```toml tab
 [lock]
-  # 默认使用redis实现分布式锁, 需要配置redis, 具体见redis相关配置
-  provider = "redis"
+  # 默认使用 go_cache
+  # 如果想使用redis分布式锁, 需要配置redis, 具体见redis相关配置
+  provider = "go_cache"
 ```
 
 ```env tab
-LOCK_PROVIDER="redis"
+LOCK_PROVIDER="go_cache"
 ```
 
 ## 基本使用

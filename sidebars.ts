@@ -50,6 +50,7 @@ const sidebars: SidebarsConfig = {
         'framework/component/kafka',
         'framework/component/cache',
         'framework/component/lock',
+        'framework/component/ip2region',
       ],
     },
     {
