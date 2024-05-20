@@ -40,11 +40,11 @@ import (
 func main() {
 	ioc.DevelopmentSetup()
 
-	resp, err := ip2region.Get().LookupIP("171.216.76.162")
+	resp, err := ip2region.Get().LookupIP("117.136.38.42")
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(resp)
-	// 中国|0|四川省|成都市|电信
+	// 中国|0|北京|北京市|移动
 }
 ```
