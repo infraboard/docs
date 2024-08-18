@@ -30,6 +30,42 @@ KAFKA_PASSWORD=""
 KAFKA_DEBUG=false
 ```
 
+## 环境
+
+这里环境采用Docker composej安装:
+
+创建dock compose编排文件: docker-compose.yml
+```yaml
+version: '2'
+services:
+  zoo1:
+    image: wurstmeister/zookeeper
+    restart: unless-stopped
+    hostname: zoo1
+    ports:
+      - "2181:2181"
+    container_name: zookeeper
+
+  kafka1:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: "zoo1:2181"
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "stream-in:1:1,stream-out:1:1"
+    depends_on:
+      - zoo1
+    container_name: kafka
+```
+
+启动kafka服务
+
+```
+docker-compose up -d
+```
 
 ## 基本使用
 

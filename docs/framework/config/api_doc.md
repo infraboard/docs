@@ -199,6 +199,14 @@ http://127.0.0.1:8080/apidocs.json
 ### Swagger UI
 
 
+#### 离线方式
+
+```
+docker run -p 80:8080 swaggerapi/swagger-ui
+```
+
+通过localhost:80 方便离线版本的swagger-ui
+
 #### 在线展示
 
 我们利用Swagger官网工具: [Swagger UI Live Demo](https://petstore.swagger.io/?_gl=1*tg05bx*_gcl_au*MTQzNjI0NTc1OC4xNzA0MTYwNDk2&_ga=2.121705474.883653745.1704160496-643310157.1681607298)

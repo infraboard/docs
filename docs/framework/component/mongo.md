@@ -28,6 +28,12 @@ MONGO_AUTH_DB="admin"
 MONGO_ENABLE_TRACE=true
 ```
 
+## 环境准备
+
+```
+docker run -itd -p 27017:27017 --name mongo mongo
+```
+
 ## 基本使用
 
 ```go

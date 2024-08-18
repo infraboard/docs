@@ -129,7 +129,7 @@ APP_NAME="mcube_app"
 ```toml tab
 [http]
   # 是否开启HTTP Server, 默认会根据是否有注册得有API对象来自动开启
-  enable = false
+  enable = true
   # HTTP服务Host
   host = "127.0.0.1"
   # HTTP服务端口
@@ -176,7 +176,7 @@ HTTP_HEALTH_CHECK_ENABLED=true
 ```toml tab
 [grpc]
   # 开启GRPC服务
-  enable = false
+  enable = true
   # Server监听的地址
   host = "127.0.0.1"
   # Server监听的端口
