@@ -31,10 +31,26 @@ HTTP_CORS_MAX_AGE=43200
 
 ## 基本使用
 
+
+### Gin框架使用
+
+
 ```go
 import (
     ...
-    _ "github.com/infraboard/mcube/v2/ioc/config/cors"
+    _ "github.com/infraboard/mcube/v2/ioc/config/cors/gin"
+    ...
+)
+```
+
+
+
+### GoRestful框架使用
+
+```go
+import (
+    ...
+    _ "github.com/infraboard/mcube/v2/ioc/config/cors/gorestful"
     ...
 )
 ```

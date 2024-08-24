@@ -10,7 +10,7 @@ monogodb 有Go语言官方SDK, 因此直接使用官方SDK Mongo Driver来操作
 ## 配置组件
 
 ```toml tab
-[mongodb]
+[mongo]
   endpoints = ["127.0.0.1:27017"]
   username = "admin"
   password = "123456"

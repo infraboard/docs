@@ -59,25 +59,8 @@ func main() {
 	// 注册HTTP接口类
 	ioc.Api().Registry(&ApiHandler{})
 
-	cmd.Root.AddCommand(
-		&cobra.Command{
-			Use:   "start",
-			Short: "example API服务",
-			Run: func(cmd *cobra.Command, args []string) {
-				cobra.CheckErr(server.Run(context.Background()))
-			},
-		},
-		&cobra.Command{
-			Use:   "init",
-			Short: "初始化Admin用户名密码",
-			Run: func(cmd *cobra.Command, args []string) {
-				cobra.CheckErr(server.Run(context.Background()))
-			},
-		},
-	)
-
 	// 启动
-	cmd.Execute()
+	cmd.Start()
 }
 ```
 
