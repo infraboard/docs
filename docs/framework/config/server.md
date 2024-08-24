@@ -3,8 +3,6 @@ title: Server
 sidebar_label: Server
 ---
 
-
-
 ## 启动服务
 
 ### 直接启动
@@ -101,10 +99,16 @@ $ go run main.go start
 ```toml tab
 [app]
   name = "mcube_app"
+  description = "app desc"
+  domain = "localhost"
+  encrypt_key = "defualt app encrypt key"
 ```
 
 ```env tab
 APP_NAME="mcube_app"
+APP_DESCRIPTION="app desc"
+APP_DOMAIN="localhost"
+APP_ENCRYPT_KEY="defualt app encrypt key"
 ```
 
 ### HTTP Server
