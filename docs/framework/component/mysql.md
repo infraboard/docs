@@ -15,9 +15,8 @@ Go中最流行的ORM库:
 + [xorm](https://gitea.com/xorm/xorm): 简洁易用，支持多种数据库，适合小型项目和快速开发
 + [sqlboiler](https://github.com/volatiletech/sqlboiler): 基于模型生成代码，强调性能和类型安全，适合对性能有较高要求的应用
 
-这里选择支持:
-	+ gorm: 当前流行度最高
-	+ sqlx: 稍后会支持
+这里选择支持gorm:
+	+ gorm: 当前流行度最高，文档最完善
 
 ## 配置组件
 

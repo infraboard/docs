@@ -4,11 +4,12 @@ sidebar_label: Log
 ---
 
 常见的功能比较完善的日志库有:
-+ logrus
-+ zerolog
-+ zap
++ [zerolog](https://github.com/rs/zerolog): 注重性能和低开销，采用结构化日志，适合对性能要求极高的场景
++ [logrus](https://github.com/sirupsen/logrus): 功能丰富且易于使用，支持多种输出格式和钩子，适合快速集成
++ [zap](https://github.com/uber-go/zap): 高性能且灵活，提供结构化日志和多种级别的日志记录，适合需要高吞吐量的应用
 
-其中以zerolog在性能和使用体验上较佳，因此选择集成zerolog
+以上3中日志库都使用过, 综合性能和使用体验上来说 zerolog 最佳, 因此打算支持:
+	+ zerolog: 性能和使用体验上由于其他2个
 
 ##  默认配置
 
