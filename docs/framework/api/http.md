@@ -3,9 +3,17 @@ title: HTTP接口
 sidebar_label: HTTP接口
 ---
 
-支持的Web框架:
+Go语言当下最流行的一些Web编程框架:
++ [Gin](https://github.com/gin-gonic/gin): 高性能、灵活的路由和中间件支持，适合构建高并发的RESTful API
++ [Go-Restful](https://github.com/emicklei/go-restful): 专注于RESTful风格的API，强调资源管理和可扩展性
++ [Echo](https://github.com/labstack/echo): 轻量级、高性能，支持丰富的中间件和灵活的路由
++ [Beego](https://github.com/beego/beego): 全栈框架，包含MVC、RESTful支持和自动化工具，适合快速开发
+
+这里选择支持当下最流行的2种 Restful 的高性能轻量级框架:
 + Gin
 + GoRestful(v3)
+
+总的来说，Go语言的Web框架各有特点，开发者可以根据项目需求选择合适的框架。 
 
 ## Gin框架
 
@@ -167,7 +175,5 @@ $ inforboard/mcube/examples ‹master› » go run http_go_restful/main.go
 ```
 
 完整的例子请查看: [gin](https://github.com/infraboard/mcube/blob/master/examples/http_go_restful/main.go)
-
-
 
 

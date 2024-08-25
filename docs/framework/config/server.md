@@ -62,34 +62,26 @@ func main() {
 }
 ```
 
-运行后我们就可以看到有2个命令可用了:
+运行后我们就可以看到有1个命令可用了:
 + start 命令
-+ init 命令
 ```sh
-$ go run main.go 
+$ go run main.go start
 Usage:
-  exapmle [flags]
-  exapmle [command]
+  cmdb [flags]
+  cmdb [command]
 
 Available Commands:
   completion  Generate the autocompletion script for the specified shell
   help        Help about any command
-  init        初始化Admin用户名密码
-  start       example API服务
+  start       启动服务
 
 Flags:
   -f, --config-file string   the service config from file (default "etc/application.toml")
   -t, --config-type string   the service config type [file/env] (default "file")
-  -h, --help                 help for exapmle
-  -v, --version              the mcenter version
+  -h, --help                 help for this command
+  -v, --version              the service version
 
-Use "exapmle [command] --help" for more information about a command.
-
-$ go run main.go start
-2024-01-25T12:22:36+08:00 INFO   ioc/server/server.go:74 > loaded configs: [app.v1 trace.v1 log.v1 datasource.v1 grpc.v1 http.v1] component:SERVER
-2024-01-25T12:22:36+08:00 INFO   ioc/server/server.go:75 > loaded controllers: [tokens.v1 users.v1] component:SERVER
-2024-01-25T12:22:36+08:00 INFO   ioc/server/server.go:76 > loaded apis: [tokens.v1 users.v1 module_a.v1] component:SERVER
-...
+Use "cmdb [command] --help" for more information about a command.
 ```
 
 ## 服务配置
