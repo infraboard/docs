@@ -3,8 +3,21 @@ title: MySQL 数据库操作
 sidebar_label: MySQL 数据库操作
 ---
 
+操作关系型数据库我们并没有直接使用原生的sql.DB对象，而是会选择一款ORM框架。
 
-操作关系型数据库我们并没有直接使用原生的sql.DB对象，而是选择比较流行的gorm
+## ORM框架
+
+ORM框架(Object Relational Mapping) 是将数据库表与对象进行映射，从而可以通过对象操作数据库表。
+
+Go中最流行的ORM库:
++ [gorm](https://github.com/go-gorm/gorm): 功能强大且易于使用，支持丰富的特性和多种数据库，适合快速开发。 
++ [sqlx](https://github.com/jmoiron/sqlx): 轻量级库，提供对原生 SQL 的支持，注重性能和灵活性，适合需要复杂查询的场景
++ [xorm](https://gitea.com/xorm/xorm): 简洁易用，支持多种数据库，适合小型项目和快速开发
++ [sqlboiler](https://github.com/volatiletech/sqlboiler): 基于模型生成代码，强调性能和类型安全，适合对性能有较高要求的应用
+
+这里选择支持:
+	+ gorm: 当前流行度最高
+	+ sqlx: 稍后会支持
 
 ## 配置组件
 
