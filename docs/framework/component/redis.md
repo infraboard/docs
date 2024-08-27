@@ -10,7 +10,7 @@ sidebar_label: Redis 使用
 ```toml tab
 [redis]
   endpoints = ["127.0.0.1:6379"]
-  database = 0
+  db = 0
   username = ""
   password = ""
   enable_trace = true
@@ -19,7 +19,7 @@ sidebar_label: Redis 使用
 
 ```env tab
 REDIS_ENDPOINTS="127.0.0.1:6379"
-REDIS_DATABASE=0
+REDIS_DB=0
 REDIS_USERNAME=""
 REDIS_PASSWORD=""
 REDIS_ENABLE_TRACE=true
