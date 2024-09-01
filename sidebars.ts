@@ -23,6 +23,8 @@ const sidebars: SidebarsConfig = {
         'framework/api/index',
         'framework/api/http',
         'framework/api/grpc',
+        'framework/api/exception',
+        'framework/api/response',
       ],
     },
     {

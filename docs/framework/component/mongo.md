@@ -114,10 +114,6 @@ err = coll.FindOne(context.TODO(), filter).Decode(&result)
 
 2. find案例
 ```go
-coll := client.Database("sample_restaurants").Collection("restaurants")
-// Creates a query filter to match documents in which the "cuisine"
-// is "Italian"
-filter := bson.M{"cuisine": "Italian"}
 // Retrieves documents that match the query filter
 cursor, err := coll.Find(context.TODO(), filter)
 if err != nil {
