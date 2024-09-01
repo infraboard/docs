@@ -3,6 +3,7 @@ title: MongoDB 数据库操作
 sidebar_label: MongoDB 数据库操作
 ---
 
+
 monogodb 有Go语言官方SDK, 因此直接使用[官方SDK Mongo Driver](https://www.mongodb.com/docs/drivers/go/current/quick-start/)来操作MongoDB
 
 ## 配置组件
@@ -58,7 +59,7 @@ func main() {
 
 下面整理了一些CRUD常用方式, 更详细信息请参考[MongoDB CRUD Operations](https://www.mongodb.com/docs/manual/crud/)
 
-go 通过struct tag:bson 来完成 struct <===> bson的映射, 具体请参考[Use Struct Tags](https://www.mongodb.com/docs/drivers/go/current/usage-examples/struct-tagging/)
+go 通过struct tag:bson 来完成 struct与bson的映射, 具体请参考[Use Struct Tags](https://www.mongodb.com/docs/drivers/go/current/usage-examples/struct-tagging/)
 ```go
 type Restaurant struct {
 	ID           primitive.ObjectID `bson:"_id"`
@@ -83,7 +84,7 @@ struct tag如下:
 + db.collection.insertOne()
 + db.collection.insertMany()
 
-![mongo_insert](/img/mcube/mongo_insert.png)
+![mongo_insert](/img/mongo/insert.png)
 
 ### Query
 
@@ -91,7 +92,7 @@ struct tag如下:
 + db.collection.find()
 + db.collection.findOne()
 
-![mongo_query](/img/mcube/mongo_query.png)
+![mongo_query](/img/mongo/query.png)
 
 #### 基础案例
 
@@ -155,7 +156,7 @@ cursor, err := coll.Find(context.TODO(),bson.M{
 + db.collection.updateMany()
 + db.collection.replaceOne()
 
-![mongo_update](/img/mcube/mongo_update.png)
+![mongo_update](/img/mongo/update.png)
 
 ### Delete
 
@@ -163,6 +164,6 @@ cursor, err := coll.Find(context.TODO(),bson.M{
 + db.collection.deleteOne()
 + db.collection.deleteMany()
 
-![mongo_delete](/img/mcube/mongo_delete.png)
+![mongo_delete](/img/mongo/delete.png)
 
 
