@@ -62,13 +62,12 @@ func main() {
 go 通过struct tag:bson 来完成 struct与bson的映射, 具体请参考[Use Struct Tags](https://www.mongodb.com/docs/drivers/go/current/usage-examples/struct-tagging/)
 ```go
 type Restaurant struct {
-	ID           primitive.ObjectID `bson:"_id"`
 	Name         string
-	RestaurantId string `bson:"restaurant_id"`
-	Cuisine      string
-	Address      interface{}
-	Borough      string
-	Grades       interface{}
+	RestaurantId string        `bson:"restaurant_id,omitempty"`
+	Cuisine      string        `bson:"cuisine,omitempty"`
+	Address      interface{}   `bson:"address,omitempty"`
+	Borough      string        `bson:"borough,omitempty"`
+	Grades       []interface{} `bson:"grades,omitempty"`
 }
 ```
 
@@ -80,19 +79,25 @@ struct tag如下:
 
 ### Insert
 
+![mongo_insert](/img/mongo/insert.png)
+
 用到的方法:
 + db.collection.insertOne()
 + db.collection.insertMany()
 
-![mongo_insert](/img/mongo/insert.png)
+直接将对象传入即可:
+```go
+result := &Restaurant{}
+result, err := coll.InsertOne(context.TODO(),result)
+```
 
 ### Query
+
+![mongo_query](/img/mongo/query.png)
 
 用到的方法:
 + db.collection.find()
 + db.collection.findOne()
-
-![mongo_query](/img/mongo/query.png)
 
 #### 基础案例
 
@@ -142,28 +147,65 @@ cursor, err := coll.Find(context.TODO(),bson.M{
 ```
 
 2. or
+```sql
+SELECT * FROM inventory WHERE status = "A" OR qty < 30
+```
 
+```go
+// { $or: [ { status: 'A' }, { qty: { $lt: 30 } } ] }
+cursor, err := coll.Find(context.TODO(),bson.M{"$or": bson.A{
+	bson.M{"status": "A"},
+	bson.M{"qty": bson.M{"$lt": 30}},
+}})
+```
 
 3. like
+```sql
+SELECT * FROM inventory WHERE status = "A" AND ( qty < 30 OR item LIKE "p%")
+```
 
+```go
+// { status: 'A', $or: [{ qty: { $lt: 30 } }, { item: { $regex: '^p' } }]}
+cursor, err := coll.Find(context.TODO(),bson.M{"status": "A", "$or": bson.A{
+	bson.M{"qty": bson.M{"$lt": 30}},
+	bson.M{"item": bson.M{"$regex": "^p", "$options": "im"}},
+}})
+```
 
-其他[query-selectors](https://www.mongodb.com/docs/manual/reference/operator/query/#std-label-query-selectors)
++ $lt
++ $or
++ $regex
+
+上面这些都是mongo里面的查询选择器, 更多信息请参考[query-selectors](https://www.mongodb.com/docs/manual/reference/operator/query/#std-label-query-selectors)
 
 ### Update
+
+![mongo_update](/img/mongo/update.png)
 
 用到的方法:
 + db.collection.updateOne()
 + db.collection.updateMany()
 + db.collection.replaceOne()
 
-![mongo_update](/img/mongo/update.png)
+```go
+// Creates instructions to add the "avg_rating" field to documents
+result := &Restaurant{}
+// Updates the first document that has the specified "_id" value
+result, err := coll.UpdateOne(context.TODO(), bson.M{"_id": "<your id>"}, bson.M{"$set": result})
+```
 
 ### Delete
+
+![mongo_delete](/img/mongo/delete.png)
 
 用到的方法:
 + db.collection.deleteOne()
 + db.collection.deleteMany()
 
-![mongo_delete](/img/mongo/delete.png)
+```go
+// Deletes the first document that has a "title" value of "Twilight"
+result, err := coll.DeleteOne(context.TODO(),  bson.M{"_id": "<your id>"})
+```
+
 
 
