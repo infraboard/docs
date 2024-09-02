@@ -25,6 +25,7 @@ const sidebars: SidebarsConfig = {
         'framework/api/grpc',
         'framework/api/exception',
         'framework/api/response',
+        'framework/api/musk',
       ],
     },
     {
