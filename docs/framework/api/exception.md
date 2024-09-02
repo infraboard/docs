@@ -21,8 +21,20 @@ var (
 )
 ```
 
+当前前端拿到这个error信息时:
+```json
+{
+    "error": "用户Token已经过期"
+}
+```
 
-只有一个message: 用户Token已经过期, 不包含业务码, 也无法扩展
+只能通过字符串匹配来辨别异常, 这种方式很显然 容易误伤, 因此我们需要一个对异常准确的定义: 异常码应运而生， 通过为每一种异常定义一个独特的编码, 来解决异常识别问题, 比如
+```json
+{
+    "code": 10001,
+    "message": "用户Token已经过期"
+}
+```
 
 ## 全局异常
 
@@ -61,10 +73,14 @@ import (
 
 func TestNewNotFound(t *testing.T) {
 	e := exception.NewNotFound("user %s not found", "alice")
-	// {"service":"","http_code":404,"code":404,"reason":"资源未找到","message":"user alice not found","meta":null,"data":null}
 	t.Log(e.ToJson())
 	t.Log(exception.IsApiException(e, exception.CODE_NOT_FOUND))
 }
+```
+
+我们将我们自定义的异常通过error返回出去, 直接使用http writer 返回出去 就是我们的接口异常了:
+```json
+{"service":"","http_code":404,"code":404,"reason":"资源未找到","message":"user alice not found","meta":null,"data":null}
 ```
 
 ## 自定义异常
@@ -86,6 +102,3 @@ func IsErrInsufficientBalance(err error) bool {
 	return exception.IsApiException(err, CODE_INSUFFICIENT_BALANCE)
 }
 ```
-
-
-
