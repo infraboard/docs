@@ -13,7 +13,7 @@ sidebar_label: Redis 使用
   db = 0
   username = ""
   password = ""
-  enable_trace = true
+  trace = true
   enable_metrics = false
 ```
 
@@ -22,8 +22,8 @@ REDIS_ENDPOINTS="127.0.0.1:6379"
 REDIS_DB=0
 REDIS_USERNAME=""
 REDIS_PASSWORD=""
-REDIS_ENABLE_TRACE=true
-REDIS_ENABLE_METRICS=false
+REDIS_TRACE=true
+REDIS_METRIC=false
 ```
 
 ## 环境准备

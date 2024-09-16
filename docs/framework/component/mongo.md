@@ -15,7 +15,7 @@ monogodb 有Go语言官方SDK, 因此直接使用[官方SDK Mongo Driver](https:
   password = "123456"
   database = "admin"
   auth_db = "admin"
-  enable_trace = true
+  trace = true
 ```
 
 ```env tab
@@ -24,7 +24,7 @@ MONGO_USERNAME="admin"
 MONGO_PASSWORD="123456"
 MONGO_DATABASE="admin"
 MONGO_AUTH_DB="admin"
-MONGO_ENABLE_TRACE=true
+MONGO_TRACE=true
 ```
 
 ## 环境准备

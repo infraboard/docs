@@ -129,8 +129,6 @@ APP_ENCRYPT_KEY="defualt app encrypt key"
   idle_timeout = 300
   # header最大大小
   max_header_size = "16kb"
-  # 开启Trace
-  enable_trace = false
 ```
 
 ```env tab
@@ -146,7 +144,6 @@ HTTP_WRITE_TIMEOUT=60
 HTTP_IDLE_TIMEOUT=300
 HTTP_MAX_HEADER_SIZE="16kb"
 
-HTTP_ENABLE_TRACE=false
 HTTP_HEALTH_CHECK_ENABLED=true
 ```
 
@@ -161,15 +158,15 @@ HTTP_HEALTH_CHECK_ENABLED=true
   # Server监听的端口
   port = 18010
   # 开启recovery恢复
-  enable_recovery = true
+  recovery = true
   # 开启Trace
-  enable_trace = true
+  trace = true
 ```
 
 ```env tab
 GRPC_ENABLE=false
 GRPC_HOST="127.0.0.1"
 GRPC_PORT=18010
-GRPC_ENABLE_RECOVERY=true
-GRPC_ENABLE_TRACE=true
+GRPC_RECOVERY=true
+GRPC_TRACE=true
 ```

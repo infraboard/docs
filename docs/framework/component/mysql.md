@@ -29,7 +29,7 @@ Go中最流行的ORM库:
   username = ""
   password = ""
   debug = false
-  enable_trace = true
+  trace = true
 ```
 
 ```env tab
@@ -40,7 +40,7 @@ DATASOURCE_DB=""
 DATASOURCE_USERNAME=""
 DATASOURCE_PASSWORD=""
 DATASOURCE_DEBUG=false
-DATASOURCE_ENABLE_TRACE=true
+DATASOURCE_TRACE=true
 ```
 
 ## 环境准备
