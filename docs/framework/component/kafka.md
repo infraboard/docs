@@ -30,9 +30,34 @@ KAFKA_PASSWORD=""
 KAFKA_DEBUG=false
 ```
 
-## 环境
+## 基本使用
 
-这里环境采用Docker composej安装:
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/infraboard/mcube/v2/ioc/config/kafka"
+)
+
+func main() {
+	// 消息生产者
+	producer := kafka.Producer("test")
+	fmt.Println(producer)
+
+	// 消息消费者
+	consumer := kafka.ConsumerGroup("group id", []string{"topic name"})
+	fmt.Println(consumer)
+}
+```
+
+
+## 样例演示
+
+### 环境准备
+
+这里环境采用Docker compose安装:
 
 创建dock compose编排文件: docker-compose.yml
 ```yaml
@@ -67,24 +92,3 @@ services:
 docker-compose up -d
 ```
 
-## 基本使用
-
-```go
-package main
-
-import (
-	"fmt"
-
-	"github.com/infraboard/mcube/v2/ioc/config/kafka"
-)
-
-func main() {
-	// 消息生产者
-	producer := kafka.Producer("test")
-	fmt.Println(producer)
-
-	// 消息消费者
-	consumer := kafka.ConsumerGroup("group id", []string{"topic name"})
-	fmt.Println(consumer)
-}
-```

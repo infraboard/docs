@@ -10,7 +10,7 @@ sidebar_label: Cors
 [cors]
   enabled = false
   cors_allowed_headers = ["*"]
-  cors_allowed_domains = ["*"]
+  cors_allowed_origins = ["*"]
   cors_allowed_methods = ["HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"]
   cors_expose_headers = []
   cors_allow_cookies = false

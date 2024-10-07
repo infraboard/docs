@@ -8,18 +8,6 @@ OpenTelemetry 作为一个行业标准，得到了 40 多个可观测供应商�
 
 因此我们Trace标准采用 [opentelemetry](https://opentelemetry.io/docs/)
 
-## 环境
-
-这里我们使用jaeger作为Trace Provider, 需要提前安装Jager
-```sh
-docker run -d --name jaeger \
-  -e COLLECTOR_OTLP_ENABLED=true \
-  -p 16686:16686 \
-  -p 4317:4317 \
-  -p 4318:4318 \
-  jaegertracing/all-in-one:latest
-```
-
 ##  默认配置
 
 ```toml tab
@@ -37,11 +25,33 @@ OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="127.0.0.1:4318"
 TRACE_INSECURE = true
 ```
 
-## 样例
+## 样例演示
 
 ![iam](/img/trace/example.png)
 
+### 环境准备
+
+这里我们使用jaeger作为Trace Provider, 需要提前安装Jager
+```sh
+docker run -d --name jaeger \
+  -e COLLECTOR_OTLP_ENABLED=true \
+  -p 16686:16686 \
+  -p 4317:4317 \
+  -p 4318:4318 \
+  jaegertracing/all-in-one:latest
+```
+
+
+### 接口
+
 社区提供了很多开箱即用的组件库: [Registry](https://opentelemetry.io/ecosystem/registry/)
+
+
+### 数据库
+
+
+### 客户端
+
 
 ## 自定义埋点
 

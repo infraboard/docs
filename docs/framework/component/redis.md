@@ -26,12 +26,6 @@ REDIS_TRACE=true
 REDIS_METRIC=false
 ```
 
-## 环境准备
-
-```sh
-docker run -itd --name redis -p 6379:6379 redis
-```
-
 ## 基本使用
 
 ```go
@@ -49,4 +43,10 @@ func main() {
 }
 ```
 
+## 样例演示
 
+### 环境准备
+
+```sh
+docker run -itd --name redis -p 6379:6379 redis
+```

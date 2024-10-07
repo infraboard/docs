@@ -3,18 +3,28 @@ title: API Doc
 sidebar_label: API Doc
 ---
 
+这里选择用 [redoc](https://github.com/Redocly/redoc) 来展示API Doc, 因为相比于经典的Swagger UI要好看些:
+
+![](/img/mcube/redoc_api_doc.png)
+
 ##  默认配置
 
 ```toml tab
 # Swagger API文档路径配置
 [apidoc]
-  # Swagger API Doc URL路径, 默认自动生成带前缀的地址比如: /default/api/v1/apidoc 
-  # 你也可以在这里直接配置绝对路径 比如: /apidocs.json
-  path = ""
+  # Swagger API Doc URL路径, 默认自动生成带前缀的地址比如: /api/{service_name}/v1/apidoc 
+  # 你也可以在这里 修改这个相对路径
+  base_path = ""
+  # swagger json api path: {base_path}{json_path}, 比如/api/{service_name}/v1/apidoc/swagger.json
+  json_path = "/swagger.json"
+  # ui path: {base_path}{ui_path}, 比如/api/{service_name}/v1/apidoc/ui.html
+  ui_path = "/ui.html"
 ```
 
 ```env tab
-HTTP_API_DOC_PATH=""
+APIDOC_BASE_PATH=""
+APIDOC_JSON_PATH="/swagger.json"
+APIDOC_UI_PATH="/ui.html"
 ```
 
 
@@ -121,12 +131,12 @@ import (
 ```sh
 studio :: mcube/examples/http_gin ‹master*› » go run main.go 
 ...
-2024-01-04T14:24:00+08:00 INFO   apidoc/swaggo/swagger.go:52 > Get the API Doc using http://127.0.0.1:8080/default/api/v1/apidoc component:API_DOC
-2024-01-04T14:24:00+08:00 INFO   config/http/http.go:211 > HTTP服务启动成功, 监听地址: 127.0.0.1:8080 component:HTTP
+2024-10-07T22:16:34+08:00 INFO   apidoc/swaggo/swagger.go:56 > Get the API JSON data using http://127.0.0.1:8080/api/v1/apidoc/swagger.json component:API_DOC
+2024-10-07T22:16:34+08:00 INFO   apidoc/swaggo/swagger.go:59 > Get the API UI using http://127.0.0.1:8080/api/v1/apidoc/ui.html component:API_DOC
+2024-10-07T22:16:34+08:00 INFO   config/http/http.go:144 > HTTP服务启动成功, 监听地址: 127.0.0.1:8080 component:HTTP
 ```
 
-然后通过 http://127.0.0.1:8080/default/api/v1/apidoc 就可以访问到 swagger 生成的json api数据
-
+然后通过 http://127.0.0.1:8080/api/v1/apidoc/swagger.json 就可以访问到 swagger 生成的json api数据, 也可以直接通过 http://127.0.0.1:8080/api/v1/apidoc/ui.html访问 API Doc UI
 
 ### GoRestful框架
 
@@ -154,10 +164,13 @@ import (
 ```
 
 ```sh
-2024-01-01T15:22:24+08:00 INFO   apidoc/restful/swagger.go:55 > Get the API Doc using http://127.0.0.1:8080/apidocs.json component:API_DOC
+2024-10-07T22:19:03+08:00 INFO   apidoc/restful/swagger.go:68 > Get the API JSON data using http://127.0.0.1:8080/api/v1/apidoc/swagger.json component:API_DOC
+2024-10-07T22:19:03+08:00 INFO   apidoc/restful/swagger.go:74 > Get the API UI using http://127.0.0.1:8080/api/v1/apidoc/ui.html component:API_DOC
 ```
 
-## API Doc展示
+## API Doc Swagger UI展示
+
+如果你不想使用集成好的API Doc UI, 也可以自己使用Swagger UI
 
 要展示 Swagger 的 API Doc需要:
 + Swagger Doc API: 提供数据

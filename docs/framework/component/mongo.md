@@ -27,12 +27,6 @@ MONGO_AUTH_DB="admin"
 MONGO_TRACE=true
 ```
 
-## 环境准备
-
-```
-docker run -itd -p 27017:27017 --name mongo mongo
-```
-
 ## 基本使用
 
 ```go
@@ -76,6 +70,13 @@ struct tag如下:
 + omitempty: 相当于json里面的omitempty, 当字段的值为空时，该字段将从编码中省略
 + minsize: 如果在 int64、uint、uint32 或 uint64 类型的字段上指定了 minsize 结构标签，并且字段的值可以适合一个有符号的 int32，则该字段将被序列化为 BSON int32
 + truncate: 如果在非浮点数字类型的字段上指定了 truncate 结构标签，则反序列化到该字段的 BSON double 将在小数点处被截断
+
+
+### 环境准备
+
+```sh
+docker run -itd -p 27017:27017 --name mongo mongo
+```
 
 ### Insert
 

@@ -43,12 +43,6 @@ DATASOURCE_DEBUG=false
 DATASOURCE_TRACE=true
 ```
 
-## 环境准备
-
-```
-docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql:8.0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-```
-
 ## 基本使用
 
 使用datasource.DB() 获取数据库Grom DB对象:
@@ -132,3 +126,8 @@ func Tx2(ctx context.Context) error {
 
 ## CURD样例
 
+### 环境准备
+
+```sh
+docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql:8.0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+```
