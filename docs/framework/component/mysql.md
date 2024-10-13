@@ -1,6 +1,6 @@
 ---
-title: MySQL 数据库操作
-sidebar_label: MySQL 数据库操作
+title: MySQL/Postgres/Sqlite 数据库操作
+sidebar_label: 关系型数据库操作
 ---
 
 操作关系型数据库我们并没有直接使用原生的sql.DB对象，而是会选择一款ORM框架。
@@ -20,6 +20,8 @@ Go中最流行的ORM库:
 
 ## 配置组件
 
+
+1. mysql/postgres
 ```toml tab
 [datasource]
   provider = "mysql"
@@ -39,6 +41,22 @@ DATASOURCE_PORT=3306
 DATASOURCE_DB=""
 DATASOURCE_USERNAME=""
 DATASOURCE_PASSWORD=""
+DATASOURCE_DEBUG=false
+DATASOURCE_TRACE=true
+```
+
+2. sqlite
+```toml tab
+[datasource]
+  provider = "sqlite"
+  database = "data/sqlite.db"
+  debug = false
+  trace = true
+```
+
+```env tab
+DATASOURCE_PROVIDER="sqlite"
+DATASOURCE_DB="data/gorm.db"
 DATASOURCE_DEBUG=false
 DATASOURCE_TRACE=true
 ```
