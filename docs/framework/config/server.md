@@ -92,14 +92,14 @@ Use "cmdb [command] --help" for more information about a command.
 [app]
   name = "mcube_app"
   description = "app desc"
-  domain = "localhost"
+  address = "localhost"
   encrypt_key = "defualt app encrypt key"
 ```
 
 ```env tab
 APP_NAME="mcube_app"
 APP_DESCRIPTION="app desc"
-APP_DOMAIN="localhost"
+APP_ADDRESS="localhost"
 APP_ENCRYPT_KEY="defualt app encrypt key"
 ```
 

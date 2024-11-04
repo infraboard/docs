@@ -20,7 +20,6 @@ Go中最流行的ORM库:
 
 ## 配置组件
 
-
 1. mysql/postgres
 ```toml tab
 [datasource]
@@ -30,6 +29,7 @@ Go中最流行的ORM库:
   database = ""
   username = ""
   password = ""
+  auto_migrate = false
   debug = false
   trace = true
 ```
@@ -41,6 +41,7 @@ DATASOURCE_PORT=3306
 DATASOURCE_DB=""
 DATASOURCE_USERNAME=""
 DATASOURCE_PASSWORD=""
+DATASOURCE_AUTO_MIGRATE=false
 DATASOURCE_DEBUG=false
 DATASOURCE_TRACE=true
 ```
@@ -50,6 +51,7 @@ DATASOURCE_TRACE=true
 [datasource]
   provider = "sqlite"
   database = "data/sqlite.db"
+  auto_migrate = false
   debug = false
   trace = true
 ```
@@ -57,6 +59,7 @@ DATASOURCE_TRACE=true
 ```env tab
 DATASOURCE_PROVIDER="sqlite"
 DATASOURCE_DB="data/gorm.db"
+DATASOURCE_AUTO_MIGRATE=false
 DATASOURCE_DEBUG=false
 DATASOURCE_TRACE=true
 ```
