@@ -22,7 +22,9 @@ const sidebars: SidebarsConfig = {
       items: [
         'framework/api/index',
         'framework/api/http',
+        'framework/api/cors',
         'framework/api/grpc',
+        'framework/api/jsonrpc',
         'framework/api/exception',
         'framework/api/response',
         'framework/api/musk',
@@ -39,7 +41,6 @@ const sidebars: SidebarsConfig = {
         'framework/config/log',
         'framework/config/metric',
         'framework/config/trace',
-        'framework/config/cors',
       ],
     },
     {

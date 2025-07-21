@@ -1,6 +1,6 @@
 ---
-title: Cors
-sidebar_label: Cors
+title: Cros
+sidebar_label: Cros
 ---
 
 
@@ -54,3 +54,4 @@ import (
     ...
 )
 ```
+
