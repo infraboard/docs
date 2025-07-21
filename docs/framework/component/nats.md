@@ -21,12 +21,16 @@ NATS_TOEKN=""
 ## 基本使用
 
 ```go
+package main
+
 import (
-	"testing"
+	"context"
+	"fmt"
 	"time"
 
 	"github.com/infraboard/mcube/v2/ioc"
 	ioc_nats "github.com/infraboard/mcube/v2/ioc/config/nats"
+	"github.com/infraboard/mcube/v2/ioc/server"
 	"github.com/nats-io/nats.go"
 )
 
@@ -34,31 +38,30 @@ const (
 	TEST_SUBJECT = "event_bus"
 )
 
-func TestPublish(t *testing.T) {
-	err := ioc_nats.Get().Publish(TEST_SUBJECT, []byte("test"))
-	if err != nil {
-		t.Fatal(err)
-	}
+func main() {
+	ioc.DevelopmentSetup()
 
-	err = ioc_nats.Get().Flush()
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
-func TestSub(t *testing.T) {
+	// 订阅消息
 	_, err := ioc_nats.Get().Subscribe(TEST_SUBJECT, func(msg *nats.Msg) {
-		t.Log(string(msg.Data))
+		fmt.Println(string(msg.Data))
 	})
 	if err != nil {
-		t.Fatal(err)
+		fmt.Println(err)
 	}
 
-	time.Sleep(30 * time.Second)
-}
+	// 发布消息
+	go func() {
+		for {
+			time.Sleep(1 * time.Second)
+			err = ioc_nats.Get().Publish(TEST_SUBJECT, []byte("test"))
+			if err != nil {
+				fmt.Println(err)
+			}
+		}
+	}()
 
-func init() {
-	err := ioc.ConfigIocObject(ioc.NewLoadConfigRequest())
+	// 启动应用
+	err = server.Run(context.Background())
 	if err != nil {
 		panic(err)
 	}
