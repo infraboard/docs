@@ -53,6 +53,7 @@ const sidebars: SidebarsConfig = {
         'framework/component/redis',
         'framework/component/kafka',
         'framework/component/nats',
+        'framework/component/rabbitmq',
         'framework/component/bus',
         'framework/component/cache',
         'framework/component/lock',
