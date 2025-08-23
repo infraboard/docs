@@ -1,0 +1,38 @@
+[
+  {
+    "type": "file",
+    "name": "arch",
+    "label": "架构理念"
+  },
+  {
+    "type": "file",
+    "name": "framework",
+    "label": "框架理念"
+  },
+  {
+    "type": "file",
+    "name": "quickstart",
+    "label": "快速开始"
+  },
+  {
+    "type": "dir",
+    "name": "config",
+    "label": "应用配置",
+    "collapsible": true,
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "api",
+    "label": "应用接口",
+    "collapsible": true,
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "component",
+    "label": "应用组件",
+    "collapsible": true,
+    "collapsed": false
+  }
+]

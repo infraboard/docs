@@ -1,0 +1,32 @@
+[
+  {
+    "type": "file",
+    "name": "server",
+    "label": "服务器"
+  },
+  {
+    "type": "file",
+    "name": "api_doc",
+    "label": "API Doc"
+  },
+  {
+    "type": "file",
+    "name": "health_check",
+    "label": "Health Check"
+  },
+  {
+    "type": "file",
+    "name": "log",
+    "label": "Log"
+  },
+  {
+    "type": "file",
+    "name": "metric",
+    "label": "Metric"
+  },
+  {
+    "type": "file",
+    "name": "trace",
+    "label": "Trace"
+  }
+]

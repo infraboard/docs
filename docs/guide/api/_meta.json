@@ -1,0 +1,37 @@
+[
+  {
+    "type": "file",
+    "name": "summary",
+    "label": "概述"
+  },
+  {
+    "type": "file",
+    "name": "http",
+    "label": "HTTP"
+  },
+  {
+    "type": "file",
+    "name": "grpc",
+    "label": "GRPC"
+  },
+  {
+    "type": "file",
+    "name": "json_rpc",
+    "label": "JsonRPC"
+  },
+  {
+    "type": "file",
+    "name": "exception",
+    "label": "业务异常"
+  },
+    {
+    "type": "file",
+    "name": "response",
+    "label": "接口响应"
+  },
+      {
+    "type": "file",
+    "name": "musk",
+    "label": "接口脱敏"
+  }
+]

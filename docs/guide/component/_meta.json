@@ -1,0 +1,52 @@
+[
+    {
+        "type": "file",
+        "name": "mysql",
+        "label": "关系型数据库操作"
+    },
+    {
+        "type": "file",
+        "name": "mongo",
+        "label": "MongoDB 数据库操作"
+    },
+    {
+        "type": "file",
+        "name": "redis",
+        "label": "Redis 使用"
+    },
+    {
+        "type": "file",
+        "name": "kafka",
+        "label": "Kafka 使用"
+    },
+    {
+        "type": "file",
+        "name": "nats",
+        "label": "NATS 使用"
+    },
+    {
+        "type": "file",
+        "name": "rabbitmq",
+        "label": "RabbitMQ 使用"
+    },
+    {
+        "type": "file",
+        "name": "bus",
+        "label": "消息总线"
+    },
+    {
+        "type": "file",
+        "name": "cache",
+        "label": "数据缓存"
+    },
+    {
+        "type": "file",
+        "name": "lock",
+        "label": "分布式锁"
+    },
+        {
+        "type": "file",
+        "name": "ip2region",
+        "label": "IP位置解析"
+    }
+]

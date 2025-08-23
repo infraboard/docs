@@ -1,0 +1,12 @@
+[
+  {
+    "text": "框架指南",
+    "link": "/guide/quickstart",
+    "activeMatch": "/guide/"
+  },
+  {
+    "text": "应用模块",
+    "link": "/hello/",
+    "activeMatch": "/hello/"
+  }
+]
