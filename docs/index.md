@@ -6,11 +6,11 @@ hero:
   text: 渐进式微服务开发框架
   actions:
     - theme: brand
+      text: 介绍
+      link: /guide/framework
+    - theme: alt
       text: 快速开始
       link: /guide/quickstart
-    - theme: alt
-      text: GitHub
-      link: https://github.com/infraboard/mcube
   image:
     src: /log.png
     alt: Logo
