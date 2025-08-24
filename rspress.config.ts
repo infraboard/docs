@@ -5,10 +5,10 @@ export default defineConfig({
   root: path.join(__dirname, 'docs'),
   title: 'mcube',
   description: '基于IOC为开发者提供配置即用的组件化开发体验的工具箱',
-  icon: '/log.png',
+  icon: '/mcube-light-logo.png',
   logo: {
-    light: '/log.png',
-    dark: '/log.png',
+    light: '/mcube-dark-logo.png',
+    dark: '/mcube-light-logo.png',
   },
   logoText: 'mcube',
   themeConfig: {

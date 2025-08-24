@@ -12,7 +12,7 @@ hero:
       text: 快速开始
       link: /guide/quickstart
   image:
-    src: /log.png
+    src: /mcube-dark-logo.png
     alt: Logo
 features:
   - title: 开箱即用
