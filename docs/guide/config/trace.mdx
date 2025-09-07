@@ -14,8 +14,9 @@ OpenTelemetry 作为一个行业标准，得到了 40 多个可观测供应商�
 ```toml 
 [trace]
   enable = false
+  # 默认stdout, 用于开发调试, 生产推荐otlp 模式
   provider = "otlp"
-  endpoint = "127.0.0.1:4318"
+  endpoint = "127.0.0.1:4317"
   insecure = true
 ```
 </Tab>
@@ -24,7 +25,7 @@ OpenTelemetry 作为一个行业标准，得到了 40 多个可观测供应商�
 ```sh 
 TRACE_ENABLE=false
 TRACE_PROVIDER="otlp"
-OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="127.0.0.1:4318"
+OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="127.0.0.1:4317"
 TRACE_INSECURE = true
 ```
 </Tabs>
@@ -37,13 +38,18 @@ TRACE_INSECURE = true
 
 这里我们使用jaeger作为Trace Provider, 需要提前安装Jager
 ```sh
-docker run -d --name jaeger \
-  -e COLLECTOR_OTLP_ENABLED=true \
+docker run --rm --name jaeger \
   -p 16686:16686 \
   -p 4317:4317 \
   -p 4318:4318 \
-  jaegertracing/all-in-one:latest
+  -p 5778:5778 \
+  -p 9411:9411 \
+  -e OTEL_EXPORTER_OTLP_INSECURE=true \        # 明确禁用 TLS
+  -e OTEL_EXPORTER_OTLP_TRACES_INSECURE=true \ # 明确禁用 Traces 的 TLS
+  cr.jaegertracing.io/jaegertracing/jaeger:2.10.0
 ```
+
+安装完成后，访问 http://127.0.0.1:16686/ 访问 Jaeger 页面
 
 + otlp go sdk 使用方法: https://opentelemetry.io/docs/languages/go/exporters/
 + jaeger 端口说明: https://www.jaegertracing.io/docs/1.55/getting-started/#all-in-one
@@ -59,15 +65,20 @@ docker run -d --name jaeger \
 
 ### 客户端
 
+1. restful client
+[resty](https://github.com/dubonzi/otelresty)
 
-## 自定义埋点
+2. http client 
+[otelhttp](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/main/instrumentation/net/http/otelhttp/example)
+
+### 自定义埋点
 
 ```go
 _, span := tracer.Start(reg.Request.Context(), "getUser", oteltrace.WithAttributes(attribute.String("id", uid)))
 defer span.End()
 ```
 
-## 测试
+### 测试
 
 ```sh
 curl -H "traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01" http://localhost:8080/your-api
@@ -99,3 +110,94 @@ TraceIDRatioBased(ratio float64) 确实是一个百分比采样器：参数范�
 + 性能调优：根据实际流量调整批量处理参数
 + 安全配置：生产环境使用 TLS 和认证
 + 避免 stdout：生产环境不要使用 stdout exporter
+
+## 原生使用
+
+```go
+package main
+
+import (
+    "context"
+    "log"
+    "net/http"
+    "time"
+
+    "go.opentelemetry.io/otel"
+    "go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
+    "go.opentelemetry.io/otel/propagation"
+    "go.opentelemetry.io/otel/sdk/resource"
+    sdktrace "go.opentelemetry.io/otel/sdk/trace"
+    semconv "go.opentelemetry.io/otel/semconv/v1.21.0"
+    "google.golang.org/grpc"
+    "google.golang.org/grpc/credentials/insecure"
+)
+
+func main() {
+    ctx := context.Background()
+
+    // 1. 初始化导出器 (连接到本地Collector)
+    traceExporter, err := otlptracegrpc.New(ctx,
+        otlptracegrpc.WithEndpoint("localhost:4317"), // OTLP gRPC 收集器端点
+        otlptracegrpc.WithInsecure(),                 // 开发环境使用非安全连接
+        // otlptracegrpc.WithDialOption(grpc.WithBlock()), // 可选：阻塞连接
+    )
+    if err != nil {
+        log.Fatalf("failed to create trace exporter: %v", err)
+    }
+
+    // 2. 配置资源
+    res, err := resource.New(ctx,
+        resource.WithAttributes(
+            semconv.ServiceNameKey.String("my-awesome-go-service"),
+            semconv.ServiceVersionKey.String("1.0.0"),
+        ),
+        resource.WithProcess(),
+        resource.WithHost(),
+    )
+    if err != nil {
+        log.Fatalf("failed to create resource: %v", err)
+    }
+
+    // 3. 创建 BatchSpanProcessor 和 TracerProvider
+    bsp := sdktrace.NewBatchSpanProcessor(traceExporter)
+    tp := sdktrace.NewTracerProvider(
+        sdktrace.WithSampler(sdktrace.AlwaysSample()),
+        sdktrace.WithResource(res),
+        sdktrace.WithSpanProcessor(bsp),
+    )
+    defer func() {
+        // 7. 优雅关闭
+        ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+        defer cancel()
+        if err := tp.Shutdown(ctx); err != nil {
+            log.Fatalf("failed to shutdown TracerProvider: %v", err)
+        }
+    }()
+
+    // 4. 设置全局 TracerProvider 和 Propagator
+    otel.SetTracerProvider(tp)
+    otel.SetTextMapPropagator(propagation.TraceContext{})
+
+    // 5. 使用自动 Instrumentation 包装 HTTP 处理器
+    http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+        // 手动创建一个Span来记录一些操作
+        tracer := otel.Tracer("example-tracer")
+        ctx, span := tracer.Start(r.Context(), "my-handler-logic")
+        defer span.End()
+
+        // 模拟一些工作
+        time.Sleep(100 * time.Millisecond)
+        span.AddEvent("Did some work!")
+
+        w.Write([]byte("Hello, World!"))
+    })
+
+    // 使用 otelhttp 中间件包装整个路由（可选，但推荐用于自动处理HTTP请求的Span）
+    wrappedHandler := otelhttp.NewHandler(http.DefaultServeMux, "server")
+
+    log.Println("Starting server on :8080")
+    if err := http.ListenAndServe(":8080", wrappedHandler); err != nil {
+        log.Fatalf("failed to start server: %v", err)
+    }
+}
+```
