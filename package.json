@@ -11,7 +11,8 @@
     "preview": "rspress preview"
   },
   "dependencies": {
-    "rspress": "^1.45.1"
+    "rspress": "^1.45.1",
+    "rspress-plugin-mermaid": "^0.3.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

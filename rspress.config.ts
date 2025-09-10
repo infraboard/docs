@@ -1,5 +1,6 @@
 import * as path from 'node:path';
 import { defineConfig } from 'rspress/config';
+import pluginMermaid from 'rspress-plugin-mermaid';
 
 export default defineConfig({
   root: path.join(__dirname, 'docs'),
@@ -23,4 +24,7 @@ export default defineConfig({
       },
     ],
   },
+  plugins:[
+    pluginMermaid(), 
+  ]
 });

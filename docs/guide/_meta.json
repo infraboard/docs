@@ -19,7 +19,7 @@
     "name": "config",
     "label": "应用配置",
     "collapsible": true,
-    "collapsed": true
+    "collapsed": false
   },
   {
     "type": "dir",

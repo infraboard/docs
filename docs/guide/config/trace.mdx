@@ -59,9 +59,19 @@ docker run --rm --name jaeger \
 
 社区提供了很多开箱即用的组件库: [Registry](https://opentelemetry.io/ecosystem/registry/)
 
+1. http server
++ gin 
++ gorestful
 
-### 数据库
+2. rpc 
++ grpc
++ jsonrpc(http server)
 
+### 数据库与中间件
+
++ mysql
++ mongodb
++ redis
 
 ### 客户端
 
@@ -74,17 +84,43 @@ docker run --rm --name jaeger \
 ### 自定义埋点
 
 ```go
-_, span := tracer.Start(reg.Request.Context(), "getUser", oteltrace.WithAttributes(attribute.String("id", uid)))
+tracer := otel.Tracer("helloworld-api")
+_, span := tracer.Start(c.Request.Context(), "getUser", trace.WithAttributes(attribute.String("id", "user01")))
 defer span.End()
 ```
 
 ### 测试
 
 ```sh
-curl -H "traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01" http://localhost:8080/your-api
+curl -H "traceparent: 00-30e3f16352ca27246d8866f519dfcc93-0000000000000001-01" http://localhost:8020/api/exapmle/v1/api.helloserviceapihandler/
 ```
 
 ## 采样策略
+
+该流程图展示了前端驱动的分布式追踪决策流程：
+
+```mermaid
+flowchart TD
+    A[前端应用] --> B{决定是否开启追踪?}
+    
+    B -- 是 --> C[生成traceparent<br>包含Trace ID和flags=01]
+    B -- 否 --> D[不添加追踪头]
+    
+    C --> E[请求后端服务<br>携带traceparent头]
+    D --> E
+    
+    E --> F[后端服务接收请求]
+    
+    F --> G{检测追踪头?}
+    G -- 存在且已采样flags=01 --> H[采样器决策: 采样]
+    G -- 不存在或未采样flags=00 --> I[采样器决策: 不采样]
+    
+    H --> J[上报所有Span数据到Jaeger]
+    I --> K[丢弃所有Span数据]
+    
+    J --> L[Jaeger UI显示完整追踪链路]
+    K --> M[无操作, 零开销]
+```
 
 TraceIDRatioBased(ratio float64) 确实是一个百分比采样器：参数范围：0.0 到 1.0 之间的浮点数
 
@@ -102,6 +138,77 @@ TraceIDRatioBased(ratio float64) 确实是一个百分比采样器：参数范�
     ↓
 结果: 只有那10%被网关采样的请求会在你的服务中产生trace
 ```
+
+<Tabs>
+  <Tab label="javascript">
+```js 
+function generateTraceparent() {
+    const version = '00';
+    // 生成32字符的随机十六进制作为Trace ID
+    const traceId = Array.from({length: 32}, () => 
+        Math.floor(Math.random() * 16).toString(16)
+    ).join('');
+    const spanId = '0000000000000001'; // 根跨度Span ID
+    const flags = '01'; // 01=已采样，00=未采样
+    
+    return `${version}-${traceId}-${spanId}-${flags}`;
+}
+```
+</Tab>
+<Tab label="golang">
+```go
+func TestGenerateTraceparentLikeJS(t *testing.T) {
+	// 仿照JavaScript版本实现
+	traceparent := generateTraceparent()
+	t.Logf("Generated traceparent: %s", traceparent)
+}
+
+func generateTraceparent() string {
+	const version = "00"
+
+	// 生成32字符的随机十六进制作为Trace ID
+	traceId := generateValidRandomHex(32)
+
+	// 生成16字符的随机十六进制作为Span ID
+	spanId := generateValidRandomHex(16)
+
+	// 01=已采样，00=未采样
+	flags := "01"
+
+	return fmt.Sprintf("%s-%s-%s-%s", version, traceId, spanId, flags)
+}
+
+// generateValidRandomHex 生成指定长度的随机十六进制字符串，确保不全为0
+func generateValidRandomHex(length int) string {
+	const hexChars = "0123456789abcdef"
+	result := make([]byte, length)
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	// 生成随机十六进制字符串
+	for i := range result {
+		result[i] = hexChars[r.Intn(len(hexChars))]
+	}
+
+	// 确保不全为0（至少有一个非0字符）
+	allZeros := true
+	for _, b := range result {
+		if b != '0' {
+			allZeros = false
+			break
+		}
+	}
+
+	// 如果全为0，则将第一个字符设为1
+	if allZeros {
+		result[0] = '1'
+	}
+
+	return string(result)
+}
+```
+</Tab>
+</Tabs>
+
 
 ## 生产环境注意事项
 
