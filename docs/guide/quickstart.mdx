@@ -2,7 +2,68 @@
 
 下面将演示一个上图中 应用开发区的一个HelloWorld应用, 完整代码请参考: [样例代码](https://github.com/infraboard/mcube/tree/master/examples/project)
 
-## 项目结构
+## 工具箱
+
+如果你只是想用使用mcube 当作一个工具箱来使用, 而不是创建一个完整的项目, 你可以把它当作一个普通ioc容器来使用:
+
+### 使用组件
+
+直接应用组件进行使用, 组件配置稍后回讲到
+
+```go title="main.go" {4,8}
+import (
+	"fmt"
+
+	"github.com/infraboard/mcube/v2/ioc/config/datasource"
+)
+
+func main() {
+	db := datasource.DB()
+	// 通过db对象进行数据库操作
+	fmt.Println(db)
+}
+```
+
+### 初始化工具
+
+通过 DevelopmentSetupWithPath 指定配置文件逻辑来加载 组件配置:
+
+```go title="main.go" {4,9-10}
+import (
+	"fmt"
+
+	"github.com/infraboard/mcube/v2/ioc"
+	"github.com/infraboard/mcube/v2/ioc/config/datasource"
+)
+
+func main() {
+	// 开启配置文件读取配置
+	ioc.DevelopmentSetupWithPath("etc/application.toml")
+
+	db := datasource.DB()
+	// 通过db对象进行数据库操作
+	fmt.Println(db)
+}
+```
+
+### 配置组件
+
+```toml
+[datasource]
+  provider = "mysql"
+  host = "127.0.0.1"
+  port = 3306
+  database = ""
+  username = ""
+  password = ""
+  auto_migrate = false
+  debug = false
+  trace = true
+```
+
+## 项目框架
+
+mcube也内置了 http server, grpc server 以及多种web框架的支持, 你可以选择自己喜欢的框架进行完整项目的开发, 框架的接入方式如下:
 
 ```bash
 # 查看文件列表

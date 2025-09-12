@@ -111,7 +111,7 @@ func main() {
 2023-12-24T17:44:30+08:00 DEBUG  examples/log/main.go:15 > this is app1 sub logger debug msg component:APP1
 ```
 
-### Trace Logger
+### Context Logger
 
 ```go
 package main
@@ -126,15 +126,7 @@ import (
 func main() {
 	ioc.DevelopmentSetup()
 
-	gLogger := log.L()
-	glog.Debug().Msg("this is global logger debug msg")
-
-	subLogger := log.Sub("app1")
-	sublog.Debug().Msg("this is app1 sub logger debug msg")
-
-	ctx := context.Background()
-	traceLogger := log.T("app1").Trace(ctx)
-	tracelog.Debug().Msg("this is app1 trace logger debug msg")
+	log.FromCtx(c.Request.Context()).Info().Msgf("debug log")
 }
 ```
 
