@@ -32,14 +32,18 @@ JSONRPC_PATH_PREFIX="jsonrpc"
 
 ### Service定义
 
-service接口定义:
+service 接口定义
 ```go
+package service
+
+import "context"
+
 const (
 	APP_NAME = "HelloService"
 )
 
 type HelloService interface {
-	Hello(request *HelloRequest, response *HelloResponse) error
+	RPCHello(context.Context, *HelloRequest) (*HelloResponse, error)
 }
 
 type HelloRequest struct {
@@ -49,14 +53,13 @@ type HelloRequest struct {
 type HelloResponse struct {
 	Message string `json:"message"`
 }
+return nil
 ```
 
-service 客户端
+service 客户端实现(安装JSON RPC协议调用服务UserService.RPCGetUser)
 ```go
-package service
-
 import (
-	"fmt"
+	"context"
 
 	"github.com/infraboard/mcube/v2/exception"
 	"github.com/infraboard/mcube/v2/ioc/config/application"
@@ -84,18 +87,19 @@ type HelloServiceClient struct {
 	client *resty.Client
 }
 
-func (c *HelloServiceClient) Hello(in *HelloRequest, out *HelloResponse) error {
-	body := jsonrpc.NewRequest(fmt.Sprintf("%s.Hello", APP_NAME), in)
-	result := jsonrpc.NewResponse(body.Id, out)
+func (c *HelloServiceClient) RPCHello(ctx context.Context, in *HelloRequest) (*HelloResponse, error) {
+	body := jsonrpc.NewRequest("UserService.RPCGetUser", in)
+	result := jsonrpc.NewResponse[HelloResponse]()
+
 	_, err := c.client.R().SetDebug(true).SetBody(body).SetResult(result).Post("")
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if result.Error != nil {
-		return exception.NewApiExceptionFromString(*result.Error)
+		return nil, result.Error
 	}
-	return nil
+	return result.Result, nil
 }
 ```
 
@@ -105,38 +109,46 @@ func (c *HelloServiceClient) Hello(in *HelloRequest, out *HelloResponse) error {
 package main
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/infraboard/mcube/v2/examples/jsonrpc/service"
 	"github.com/infraboard/mcube/v2/ioc/config/jsonrpc"
 	"github.com/infraboard/mcube/v2/ioc/server/cmd"
 )
 
-var _ service.HelloService = (*HelloServiceServer)(nil)
+// 用户服务
+type UserService struct{}
 
-// 实现业务功能
-// req := &HelloRequest{}
-// resp := &HelloResponse{}
-// err := &HelloServiceServer{}.Hello(req, resp)
-// net/rpc
-// 1. 写好的对象， 注册给RPC Server
-// 2. 再把RPC Server 启动起来
-type HelloServiceServer struct {
-}
-
-// HTTP Handler
-func (h *HelloServiceServer) Hello(request *service.HelloRequest, response *service.HelloResponse) error {
-	response.Message = "hello:" + request.MyName
-	return nil
+// RPC 方法：自动注册为 getUser
+func (s *UserService) RPCGetUser(ctx context.Context, req *service.HelloRequest) (*service.HelloResponse, error) {
+	// 直接使用解析好的请求对象
+	return &service.HelloResponse{
+		Message: fmt.Sprintf("Hello, %s", req.MyName),
+	}, nil
 }
 
 func main() {
-	// 注册服务
-	err := jsonrpc.GetService().Registry(service.APP_NAME, &HelloServiceServer{})
-	if err != nil {
-		panic(err)
-	}
-
+	jsonrpc.RegisterService(&UserService{})
 	cmd.Start()
 }
+```
+
+启动服务
+``` sh {7}
+$ go run server/main.go start
+2025/09/26 19:17:07 init app app[priority: 999] ok.
+2025/09/26 19:17:07 init app trace[priority: 998] ok.
+2025/09/26 19:17:07 init app log[priority: 997] ok.
+2025/09/26 19:17:07 init app grpc[priority: -89] ok.
+2025/09/26 19:17:07 init app http[priority: -99] ok.
+2025-09-26T19:17:07+08:00 INFO   config/jsonrpc/service.go:156 > method: UserService.RPCGetUser --> UserService.RPCGetUser(*service.HelloRequest) app:mcube_app group:default hostname:oldfishmpb-9.local logger:jsonrpc
+2025/09/26 19:17:07 init app jsonrpc[priority: -89] ok.
+2025-09-26T19:17:07+08:00 INFO   ioc/server/server.go:79 > loaded configs: [app.v1 trace.v1 log.v1 grpc.v1 http.v1] app:mcube_app group:default hostname:oldfishmpb-9.local logger:server
+2025-09-26T19:17:07+08:00 INFO   ioc/server/server.go:79 > loaded default: [] app:mcube_app group:default hostname:oldfishmpb-9.local logger:server
+2025-09-26T19:17:07+08:00 INFO   ioc/server/server.go:79 > loaded controllers: [] app:mcube_app group:default hostname:oldfishmpb-9.local logger:server
+2025-09-26T19:17:07+08:00 INFO   ioc/server/server.go:79 > loaded apis: [jsonrpc.v1] app:mcube_app group:default hostname:oldfishmpb-9.local logger:server
+2025-09-26T19:17:07+08:00 INFO   config/jsonrpc/service.go:86 > JSON RPC服务启动成功, 监听地址: http://127.0.0.1:9090/jsonrpc/mcube_app/v1 app:mcube_app group:default hostname:oldfishmpb-9.local logger:jsonrpc
 ```
 
 ### 客户端使用
@@ -145,6 +157,7 @@ func main() {
 package main
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/infraboard/mcube/v2/examples/jsonrpc/service"
@@ -152,21 +165,18 @@ import (
 
 func main() {
 	// 1. 通过网络调用 服务端的函数(RPC)
-	// 建立网络连接
-	client, err := service.NewClient("http://127.0.0.1:9090/jsonrpc/mcube_app")
+	client, err := service.NewClient("http://127.0.0.1:9090/jsonrpc/mcube_app/v1")
 	if err != nil {
 		panic(err)
 	}
 	// 方法调用
-	// serviceMethod string, args any, reply any
-	req := &service.HelloRequest{
+	resp, err := client.RPCHello(context.Background(), &service.HelloRequest{
 		MyName: "bob",
-	}
-	resp := &service.HelloResponse{}
-	if err := client.Hello(req, resp); err != nil {
+	})
+	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println("xxx", resp.Message)
+	fmt.Println("message", resp.Message)
 }
 ```
