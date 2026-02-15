@@ -7,10 +7,10 @@ hero:
   actions:
     - theme: brand
       text: 介绍
-      link: /guide/framework
+      link: /guide/framework/framework
     - theme: alt
       text: 快速开始
-      link: /guide/quickstart
+      link: /guide/framework/quickstart
   image:
     src: 
       dark: /mcube-light-logo.png

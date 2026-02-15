@@ -5,14 +5,11 @@
     "label": "架构理念"
   },
   {
-    "type": "file",
+    "type": "dir",
     "name": "framework",
-    "label": "框架理念"
-  },
-  {
-    "type": "file",
-    "name": "quickstart",
-    "label": "快速开始"
+    "label": "框架介绍",
+    "collapsible": true,
+    "collapsed": false
   },
   {
     "type": "dir",
