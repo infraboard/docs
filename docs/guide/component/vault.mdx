@@ -327,11 +327,13 @@ tls_key = "/path/to/client.key"
 # tls_skip_verify = true
 ```
 
-## 前置准备
+## API 使用示例
+
+### 前置准备
 
 为了方便功能验证，本示例将使用 Docker 启动一个 Vault 服务器。
 
-### 1. 启动 Vault 服务
+#### 1. 启动 Vault 服务
 
 使用 Docker 启动一个开发模式的 Vault 服务器：
 
@@ -344,7 +346,7 @@ docker run -d --name=vault \
   hashicorp/vault:latest
 ```
 
-### 2. 创建测试秘密
+#### 2. 创建测试秘密
 
 ```bash
 export VAULT_ADDR='http://127.0.0.1:8200'
@@ -360,9 +362,7 @@ vault kv put secret/myapp/config \
 vault kv get secret/myapp/config
 ```
 
-## API 使用示例
-
-### 读取秘密
+#### 读取秘密
 
 ```go
 resp, err := client.Secrets.KvV2Read(ctx, "path/to/secret")
@@ -374,7 +374,7 @@ if err != nil {
 password := resp.Data.Data["password"].(string)
 ```
 
-### 写入秘密
+### 3.写入秘密
 
 ```go
 import "github.com/hashicorp/vault-client-go/schema"
