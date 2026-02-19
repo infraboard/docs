@@ -16,6 +16,11 @@
     },
     {
         "type": "file",
+        "name": "vault",
+        "label": "Vault 使用"
+    },
+    {
+        "type": "file",
         "name": "kafka",
         "label": "Kafka 使用"
     },
